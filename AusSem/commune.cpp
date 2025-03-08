@@ -80,9 +80,52 @@ unsigned int commune::getPopulation()
 
 void commune::print()
 {
-    std::string s(this->name);
-    std::cout << s << std::endl;
+    
+    std::cout << convert_utf8() << std::endl;
     
 }
+
+std::string commune::convert_utf8()
+{
+    std::string name_str(name);  // Convert char* to std::string
+
+    std::string result;
+    size_t len = name_str.length();
+
+    for (size_t i = 0; i < len; ++i) {
+        unsigned char firstByte = name_str[i];
+
+        if (firstByte <= 127) {
+            // Single-byte ASCII characters (0 to 127)
+            result += firstByte;
+        }
+        else {
+            // Multi-byte UTF-8 characters
+            if (i + 1 < len) {
+                unsigned char secondByte = name_str[i + 1];
+
+                // Check if it's a valid continuation byte
+                if ((secondByte & 0xC0) == 0x80) {
+                    // Valid two-byte character
+                    // Combine the first and second byte (don't add them, shift them properly)
+                    unsigned char combinedByte = ((firstByte & 0x1F) << 6) | (secondByte & 0x3F);
+                    result += combinedByte;
+                    i++;  // Skip the second byte
+                }
+                else {
+                    result += '?';  // Invalid sequence, replace with '?'
+                }
+            }
+            else {
+                result += '?';  // Single invalid byte, handle as error
+            }
+        }
+    }
+
+    return result;
+}
+
+   
+
 
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <Windows.h>
 class commune
 {
 private:
@@ -14,6 +15,7 @@ public:
 	~commune();
 	unsigned int getPopulation();
 	void print();
+	std::string convert_utf8();
 	
 };
 

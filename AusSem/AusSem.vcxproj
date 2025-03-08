@@ -135,7 +135,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="algorithm.cpp" />
     <ClCompile Include="commune.cpp" />
     <ClCompile Include="file_reader.cpp" />
     <ClCompile Include="main.cpp" />
