@@ -8,10 +8,8 @@ int main()
 	algorithm algoritmus;
 	file_reader reader;
 	std::vector<commune> data = reader.read_file(2020);
-	auto pred = [](commune& comm, unsigned int min) -> bool {
-		return comm.getPopulation() >= min;
-		};
-	algoritmus.hasMinResidentsFilter(data.begin(), data.end(), 1200, pred);
+
+	algoritmus.hasMinResidentsFilter(data.begin(), data.end(), 1200);
 	std::string str = "Sharp S: ß";
 	char nieco = 225;
     std::cout << str << std::endl << nieco;

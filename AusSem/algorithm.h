@@ -10,10 +10,18 @@ class algorithm
 public:
 	
 	template<typename Iterator>
-	void hasMinResidentsFilter(Iterator begin, Iterator end, int min, std::function<bool( commune&,unsigned int min)> pred);
+	void hasMinResidentsFilter(Iterator begin, Iterator end, int min, std::function<bool(commune&, unsigned int min)> pred = [](commune& comm, unsigned int min) -> bool {
+		return comm.getPopulation() >= min;
+		});
 	template<typename Iterator>
 	void print_results(Iterator begin, Iterator end);
+	template<typename Iterator>
+	void hasMaxResidentsFilter(Iterator begin, Iterator end, int max, std::function<bool(commune&, unsigned int max)> pred =  [](commune& comm, unsigned int max) -> bool {
+		return comm.getPopulation() <= max;
+		});
 
+	
+	 
 };
 
 template<typename Iterator>
@@ -41,4 +49,9 @@ inline void algorithm::print_results(Iterator begin, Iterator end)
 		commune com = *it;
 		com.print();
 	}
+}
+
+template<typename Iterator>
+inline void algorithm::hasMaxResidentsFilter(Iterator begin, Iterator end, int max, std::function<bool(commune&, unsigned int max)> pred)
+{
 }
