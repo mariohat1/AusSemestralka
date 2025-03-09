@@ -4,12 +4,18 @@ commune::commune(const  char* name, const  char* code, unsigned int male, unsign
 {
     this->male = male;
     this->female = female;
-    size_t length = strlen(name) + 1;
+
+    std::string name_utf8 = convert_utf8(name); 
+    size_t length = name_utf8.length() + 1;    
     this->name = new char[length];
-    strcpy_s(this->name, length, name);
+
+    strcpy_s(this->name, length, name_utf8.c_str());
     size_t length_code = strlen(code) + 1;
     this->code = new char[length_code];
+
     strcpy_s(this->code, length_code, code);
+
+    
 }
 
 commune::commune(const commune& other)
@@ -81,44 +87,40 @@ unsigned int commune::getPopulation()
 void commune::print()
 {
     
-    std::cout << convert_utf8() << std::endl;
+    std::cout << this->name << std::endl;
     
 }
 
-std::string commune::convert_utf8()
+std::string commune::convert_utf8(const char* name)
 {
-    std::string name_str(name);  // Convert char* to std::string
+    std::string name_str(name);  
 
     std::string result;
     size_t len = name_str.length();
 
     for (size_t i = 0; i < len; ++i) {
-        unsigned char firstByte = name_str[i];
+        unsigned char first_byte = name_str[i];
 
-        if (firstByte <= 127) {
-            // Single-byte ASCII characters (0 to 127)
-            result += firstByte;
+        if (first_byte <= 127) {
+            
+            result += first_byte;
         }
-        else {
-            // Multi-byte UTF-8 characters
+        else { // ak je prvy bajt vacsi ako 128  kontrolujeme ci dalsi bajt je vacsi ako 128, co vlastne je utf code pre 2 bajty (co nam staci kontrolovat, lebo chcem eu jazyky)
+            
             if (i + 1 < len) {
-                unsigned char secondByte = name_str[i + 1];
+                unsigned char second_bye = name_str[i + 1];
+                             
+                if (second_bye >= 128) {     
+                    unsigned char lower_bits = (second_bye & 0b00111111); // dolne bity 
 
-                // Check if it's a valid continuation byte
-                if ((secondByte & 0xC0) == 0x80) {
-                    // Valid two-byte character
-                    // Combine the first and second byte (don't add them, shift them properly)
-                    unsigned char combinedByte = ((firstByte & 0x1F) << 6) | (secondByte & 0x3F);
+                    unsigned char first_byte_shift = (first_byte & 0b00011111); // spravenie miesta pre dolne(tych, ktore dostaneme z second_byte_shiftu.
+                    unsigned char higher_bits = first_byte_shift << 6;
+                    
+                    unsigned char combinedByte = higher_bits | lower_bits; // or aby sme ich skombinovali a neprisli o ziadne cisla
                     result += combinedByte;
-                    i++;  // Skip the second byte
-                }
-                else {
-                    result += '?';  // Invalid sequence, replace with '?'
-                }
-            }
-            else {
-                result += '?';  // Single invalid byte, handle as error
-            }
+                    i++;  
+                }                
+            }           
         }
     }
 

@@ -15,7 +15,7 @@ public:
 	~commune();
 	unsigned int getPopulation();
 	void print();
-	std::string convert_utf8();
+	std::string convert_utf8(const char* name);
 	
 };
 

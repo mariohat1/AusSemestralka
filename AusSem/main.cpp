@@ -4,7 +4,7 @@
 #include "file_reader.h"
 int main()
 {
-	SetConsoleOutputCP(1252);
+	SetConsoleOutputCP(1250);
 	algorithm algoritmus;
 	file_reader reader;
 	std::vector<commune> data = reader.read_file(2020);

@@ -62,7 +62,8 @@ std::vector<commune>& file_reader::read_file(int year)
         {
             break;
         }    
-        const commune comm = commune(name.c_str(), code.c_str(), male, female);
+        commune comm = commune(name.c_str(), code.c_str(), male, female);
+        
         data.push_back(comm);
 
     }
