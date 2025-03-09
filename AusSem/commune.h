@@ -16,6 +16,7 @@ public:
 	unsigned int getPopulation();
 	void print();
 	std::string convert_utf8(const char* name);
+	const char* getName();
 	
 };
 

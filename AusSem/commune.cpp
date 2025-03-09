@@ -127,6 +127,11 @@ std::string commune::convert_utf8(const char* name)
     return result;
 }
 
+const char* commune::getName()
+{
+    return this->name;
+}
+
    
 
 
