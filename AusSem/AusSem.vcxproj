@@ -136,13 +136,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="commune.cpp" />
-    <ClCompile Include="file_reader.cpp" />
+    <ClCompile Include="fileReader.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm.h" />
     <ClInclude Include="commune.h" />
-    <ClInclude Include="file_reader.h" />
+    <ClInclude Include="fileReader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

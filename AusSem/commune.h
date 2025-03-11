@@ -6,16 +6,16 @@ class commune
 private:
 	char* name = nullptr;
 	char* code = nullptr;
-	unsigned int male = 0;
-	unsigned int female = 0;
+	size_t male = 0;
+	size_t female = 0;
 public:
-	commune(const  char* name, const  char* code, unsigned int male, unsigned int female);
+	commune(const  char* name, const  char* code, size_t male, size_t female);
 	commune(const commune& other);
 	commune& operator=(const commune& other);
 	~commune();
-	unsigned int getPopulation();
+	size_t getPopulation();
 	void print();
-	std::string convert_utf8(const char* name);
+	
 	const char* getName();
 	
 };

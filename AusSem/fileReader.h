@@ -4,16 +4,16 @@
 #include "commune.h"
 #include <sstream>
 #include <string>
-class file_reader
+class fileReader
 {
 private:
-	std::ifstream input_reader;
+	std::ifstream inputReader;
 	std::vector<commune> data;
-	void skip_lines(int count);
+	void skipLines(int count);
 public:
 	
-	std::vector<commune>& read_file(int year);
-	~file_reader();
+	std::vector<commune>& readFile(int year);
+	~fileReader();
 
 
 };
