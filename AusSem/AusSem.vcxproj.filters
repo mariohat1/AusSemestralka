@@ -32,7 +32,7 @@
     <ClInclude Include="commune.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="algorithm.h">
+    <ClInclude Include="algoritmus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -75,7 +75,7 @@ commune::~commune()
         
 }
 
-size_t commune::getPopulation()
+unsigned commune::getPopulation()
 {
     return this->male + this->female;
 }

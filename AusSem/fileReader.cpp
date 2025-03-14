@@ -12,7 +12,7 @@ void fileReader::skipLines(int count)
 
 
 
-std::vector<commune>& fileReader::readFile(int year)
+std::vector<commune> fileReader::readFile(int year)
 {
    
     inputReader.open(std::to_string(year) + ".csv");
@@ -35,13 +35,13 @@ std::vector<commune>& fileReader::readFile(int year)
     ss.str(line);
 
     ss >>  fileYear; 
-    if (fileYear != 2020)
+    if (fileYear != year)
     {
         throw new std::runtime_error("Wrong file opened");
     }
     skipLines(3);
     std::string name, code;
-        unsigned int male, female = 0;
+        unsigned int male  = 0, female = 0;
     while (std::getline(inputReader, line))
     {
         

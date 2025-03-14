@@ -1,8 +1,8 @@
 #pragma once
 
 #include <functional>
-template<typename T>
-class algorithm
+#include "commune.h"
+class algoritmus
 {
 
 
@@ -11,14 +11,14 @@ public:
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
-		int min,
-		std::function<bool(T&, unsigned int min)> pred);
+		unsigned int min,
+		std::function<bool(commune&, unsigned int  min)> pred);
 
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
 		const char* retazec,
-		std::function<bool(T&, const char*)> pred = [](commune& comm, const char* retazec) -> bool {
+		std::function<bool(commune&, const char*)> pred = [](commune& comm, const char* retazec) -> bool {
 			const char* name = comm.getName();
 			size_t nameLen = strlen(name);
 			size_t retazecLen = strlen(retazec);
@@ -49,22 +49,21 @@ public:
 
 		});
 	
-
 };
+
 		 
 
 
 
 
-template<typename T>
 template<typename Iterator>
-auto algorithm<T>::filter(Iterator begin, Iterator end, int min, std::function<bool(T&, unsigned int min)> pred)
+auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value, std::function<bool(commune&, unsigned int min)> pred)
 {
-	std::vector<T> result;
+	std::vector<commune> result;
 	for (Iterator it = begin; it != end; ++it) {
 
-		T& iteratorValue = *it;
-		if (pred(iteratorValue, min))
+		commune& iteratorValue = *it;
+		if (pred(iteratorValue, value))
 		{
 			result.push_back(iteratorValue);
 		}
@@ -73,14 +72,14 @@ auto algorithm<T>::filter(Iterator begin, Iterator end, int min, std::function<b
 	return result;
 }
 
-template<typename T>
+
 template<typename Iterator>
-auto algorithm<T>::filter(Iterator begin, Iterator end, const char* retazec, std::function<bool(T& comm, const char* retazec)> pred)
+auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::function<bool(commune& comm, const char* retazec)> pred)
 {
-	std::vector<T> result;
+	std::vector<commune> result;
 	for (Iterator it = begin; it != end; ++it) {
 
-		T& iteratorValue = *it;
+		commune& iteratorValue = *it;
 		if (pred(iteratorValue, retazec))
 		{
 			result.push_back(iteratorValue);
@@ -89,7 +88,6 @@ auto algorithm<T>::filter(Iterator begin, Iterator end, const char* retazec, std
 	}
 	return result;
 }
-
 
 
 
