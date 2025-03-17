@@ -12,60 +12,64 @@ void fileReader::skipLines(int count)
 
 
 
-std::vector<commune> fileReader::readFile(int year)
+std::vector<commune> fileReader::readFile()
 {
-   
-    inputReader.open(std::to_string(year) + ".csv");
-
-   
-    if (!inputReader.is_open()) {
-        throw new std::runtime_error("Failed to open file");
-    }
-
-    skipLines(9);
-
-    std::string line,temp, section;
-    std::getline(inputReader, line, ';');
-    int fileYear;
-    std::stringstream ss(line);
-    ss >> temp >> section;
-    ss.clear();
-    
-    std::getline(inputReader, line, ';');
-    ss.str(line);
-
-    ss >>  fileYear; 
-    if (fileYear != year)
-    {
-        throw new std::runtime_error("Wrong file opened");
-    }
-    skipLines(3);
-    std::string name, code;
-        unsigned int male  = 0, female = 0;
-    while (std::getline(inputReader, line))
-    {
+    for (unsigned int currentYear = 2020; currentYear <= 2024; ++currentYear) {
+        inputReader.open(std::to_string(currentYear) + ".csv");
         
-        std::stringstream ss(line);
-        std::getline(ss, name, ';');
-        std::getline(ss, code, ';');
-        if (std::getline(ss, line, ';')) {
-            std::stringstream(line) >> male;
-        }       
-        std::getline(ss, line, ';'); 
 
-       
-        if (std::getline(ss, line, ';')) {
-            std::stringstream(line) >> female;
+
+        if (!inputReader.is_open()) {
+            throw new std::runtime_error("Failed to open file");
         }
-        
-        if (name == "Nicht klassifizierbar")
-        {
-            break;
-        }    
-        commune comm = commune(name.c_str(), code.c_str(), male, female);
-        
-        data.push_back(comm);
 
+        skipLines(9);
+
+        std::string line, temp, section;
+        std::getline(inputReader, line, ';');
+        int fileYear;
+        std::stringstream ss(line);
+        ss >> temp >> section;
+        ss.clear();
+
+        std::getline(inputReader, line, ';');
+        ss.str(line);
+
+
+        ss >> fileYear;
+        if (fileYear != currentYear)
+        {
+            throw new std::runtime_error("Wrong file opened");
+        }
+        skipLines(3);
+        std::string name, code;
+        unsigned int male = 0, female = 0;
+        while (std::getline(inputReader, line))
+        {
+
+            std::stringstream ss(line);
+            std::getline(ss, name, ';');
+            std::getline(ss, code, ';');
+            if (std::getline(ss, line, ';')) {
+                std::stringstream(line) >> male;
+            }
+            std::getline(ss, line, ';');
+
+
+            if (std::getline(ss, line, ';')) {
+                std::stringstream(line) >> female;
+            }
+
+            if (name == "Nicht klassifizierbar")
+            {
+                break;
+            }
+            commune comm = commune(name.c_str(), code.c_str(), male, female, currentYear);
+
+            data.push_back(comm);
+
+        }
+        inputReader.close();
     }
 	return data ;
 }

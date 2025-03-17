@@ -12,7 +12,7 @@ private:
 	void skipLines(int count);
 public:
 	
-	std::vector<commune> readFile(int year);
+	std::vector<commune> readFile();
 	~fileReader();
 
 

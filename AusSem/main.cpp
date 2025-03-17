@@ -9,7 +9,7 @@ int main()
 	SetConsoleCP(1250);
 	algoritmus algoritmus;
 	fileReader reader;
-	std::vector<commune> data = reader.readFile(2022);
+	std::vector<commune> data = reader.readFile();
 
 	std::vector<commune> dataFilter;
 	//algoritmus.hasResidentsFilter(data.begin(), data.end(), 1200);
@@ -22,7 +22,7 @@ int main()
 	{
 		comm.print();
 	}*/
-	dataFilter = algoritmus.filter(data.begin(), data.end(), "ß");
+	dataFilter = algoritmus.filter(data.begin(), data.end(), "ß", 2020);
 	for (auto& comm : dataFilter)
 	{
 		comm.print();

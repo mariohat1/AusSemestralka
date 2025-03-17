@@ -1,10 +1,10 @@
 #include "commune.h"
 
-commune::commune(const  char* name, const  char* code, size_t male, size_t female)
+commune::commune(const  char* name, const  char* code, size_t male, size_t female,unsigned int year)
 {
     this->male = male;
     this->female = female;
-
+    this->year = year;
    
     size_t length = strlen(name) + 1;
     this->name = new char[length];
@@ -37,6 +37,7 @@ commune::commune(const commune& other)
     
     this->male = other.male;
     this->female = other.female;
+    this->year = other.year;
     
 
 }
@@ -62,6 +63,7 @@ commune& commune::operator=(const commune& other)
         }
         this->female = other.female;
         this->male = other.male;
+        this->year = other.year;
     }
     return *this;
 }
@@ -85,6 +87,11 @@ void commune::print()
     
     std::cout << this->name << std::endl;
     
+}
+
+unsigned int commune::getYear()
+{
+    return this->year;
 }
 
 
