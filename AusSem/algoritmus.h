@@ -12,6 +12,7 @@ public:
 	auto filter(Iterator begin,
 		Iterator end,
 		unsigned int min,
+		unsigned int year,
 		std::function<bool(commune&, unsigned int  min)> pred);
 
 	template<typename Iterator>
@@ -58,16 +59,19 @@ public:
 
 
 template<typename Iterator>
-auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value, std::function<bool(commune&, unsigned int min)> pred)
+auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value,unsigned int year, std::function<bool(commune&, unsigned int min)> pred)
 {
 	std::vector<commune> result;
 	for (Iterator it = begin; it != end; ++it) {
-
 		commune& iteratorValue = *it;
-		if (pred(iteratorValue, value))
+		if (iteratorValue.getYear() == year)
 		{
-			result.push_back(iteratorValue);
+			if (pred(iteratorValue, value))
+			{
+				result.push_back(iteratorValue);
+			}
 		}
+
 
 	}
 	return result;
