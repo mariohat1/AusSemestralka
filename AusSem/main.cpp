@@ -22,7 +22,7 @@ int main()
 	{
 		comm.print();
 	}*/
-	dataFilter = algoritmus.filter(data.begin(), data.end(), "ß", 2020);
+	dataFilter = algoritmus.filter(data.begin(), data.end(), "ß");
 	for (auto& comm : dataFilter)
 	{
 		comm.print();

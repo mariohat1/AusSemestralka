@@ -42,14 +42,19 @@ std::vector<commune> fileReader::readFile()
             throw new std::runtime_error("Wrong file opened");
         }
         skipLines(3);
-        std::string name, code;
-        unsigned int male = 0, female = 0;
+        std::string name;
+        unsigned int male = 0, female = 0, code = 0;
         while (std::getline(inputReader, line))
         {
 
             std::stringstream ss(line);
+            
             std::getline(ss, name, ';');
-            std::getline(ss, code, ';');
+            std::getline(ss, line, '<');
+            if (std::getline(ss, line, '>')) {
+                std::stringstream(line) >> code;
+            }
+            std::getline(ss, line, ';');
             if (std::getline(ss, line, ';')) {
                 std::stringstream(line) >> male;
             }
@@ -64,7 +69,7 @@ std::vector<commune> fileReader::readFile()
             {
                 break;
             }
-            commune comm = commune(name.c_str(), code.c_str(), male, female, currentYear);
+            commune comm = commune(name.c_str(), code, male, female, currentYear);
 
             data.push_back(comm);
 

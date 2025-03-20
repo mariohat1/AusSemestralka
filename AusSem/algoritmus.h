@@ -16,10 +16,23 @@ public:
 		std::function<bool(commune&, unsigned int  min)> pred);
 
 	template<typename Iterator>
+	bool contains(Iterator begin, Iterator end,  commune& comm)
+	{
+		for (Iterator i = begin; i < end; i++)
+		{
+			commune& iteratorValue = *i;
+			if (iteratorValue.getCode() == comm.getCode())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
 		const char* retazec,
-		unsigned int year,
 		std::function<bool(commune&, const char*)> pred = [](commune& comm, const char* retazec) -> bool {
 			const char* name = comm.getName();
 			size_t nameLen = strlen(name);
@@ -59,14 +72,14 @@ public:
 
 
 template<typename Iterator>
-auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value,unsigned int year, std::function<bool(commune&, unsigned int min)> pred)
+auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value,unsigned int year, std::function<bool(commune&, unsigned int min)> predicate)
 {
 	std::vector<commune> result;
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = *it;
 		if (iteratorValue.getYear() == year)
 		{
-			if (pred(iteratorValue, value))
+			if (predicate(iteratorValue, value))
 			{
 				result.push_back(iteratorValue);
 			}
@@ -79,18 +92,17 @@ auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value,unsigne
 
 
 template<typename Iterator>
-auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec,unsigned int year, std::function<bool(commune& comm, const char* retazec)> pred)
+auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec,std::function<bool(commune& comm, const char* retazec)> predicate)
 {	
 	std::vector<commune> result;
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = *it;
-		if (iteratorValue.getYear() == year)
-		{
-			if (pred(iteratorValue, retazec))
+		
+			if (predicate(iteratorValue, retazec) && !contains(result.begin(), result.end(), iteratorValue))
 			{
 				result.push_back(iteratorValue);
 			}
-		}
+		
 		
 
 	}
