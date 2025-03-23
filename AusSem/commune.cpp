@@ -76,7 +76,7 @@ unsigned commune::getPopulation()
 void commune::print()
 {
 
-	std::cout << this->name << std::endl;
+	std::cout << this->name << " <" << this->code << "> F: " << this->female << " M: " << this->male << " " << std::endl;
 
 }
 
