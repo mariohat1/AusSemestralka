@@ -4,7 +4,9 @@
 #include "commune.h"
 class algoritmus
 {
-
+private:
+	template<typename Iterator>
+	bool contains(Iterator begin, Iterator end, commune& comm);
 
 public:
 
@@ -13,17 +15,16 @@ public:
 		Iterator end,
 		unsigned int value,
 		unsigned int year,
-		std::function<bool(commune&, unsigned int  value)> pred);
+		std::function<bool(commune&, unsigned int  value)> predicate);
 
-	template<typename Iterator>
-	bool contains(Iterator begin, Iterator end, commune& comm);
+	
 	
 
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
 		const char*,
-		std::function<bool(commune&, const char*)> pred);
+		std::function<bool(commune&, const char*)> predicate);
 	
 };
 

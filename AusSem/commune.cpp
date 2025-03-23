@@ -1,6 +1,6 @@
 #include "commune.h"
 
-commune::commune(const  char* name, unsigned int code, size_t male, size_t female, unsigned int year)
+commune::commune(const  char* name, unsigned int code, unsigned int male, unsigned int female, unsigned int year)
 {
 	this->male = male;
 	this->female = female;

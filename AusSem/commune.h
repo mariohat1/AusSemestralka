@@ -10,7 +10,7 @@ private:
 	unsigned int female = 0;
 	unsigned int year;
 public:
-	commune(const  char* name, const  unsigned int code, size_t male, size_t female, unsigned int year);
+	commune(const  char* name, const  unsigned int code, unsigned int male, unsigned int female, unsigned int year);
 	commune(const commune& other);
 	commune& operator=(const commune& other);
 	unsigned int getCode();
