@@ -10,6 +10,9 @@ private:
 	std::ifstream inputReader;
 	std::vector<commune> data;
 	void skipLines(int count);
+	commune* containsCode(unsigned int code);
+
+	
 public:
 	
 	std::vector<commune> readFile();
@@ -17,4 +20,5 @@ public:
 
 
 };
+
 

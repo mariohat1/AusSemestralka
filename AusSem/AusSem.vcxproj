@@ -143,6 +143,7 @@
     <ClInclude Include="algoritmus.h" />
     <ClInclude Include="commune.h" />
     <ClInclude Include="fileReader.h" />
+    <ClInclude Include="year.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

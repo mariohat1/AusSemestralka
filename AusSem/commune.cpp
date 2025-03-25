@@ -1,15 +1,13 @@
 #include "commune.h"
 
-commune::commune(const  char* name, unsigned int code, unsigned int male, unsigned int female, unsigned int year)
+commune::commune(const  char* name, unsigned int code)
 {
-	this->male = male;
-	this->female = female;
-	this->year = year;
+
 
 	size_t length = strlen(name) + 1;
 	this->name = new char[length];
 	strcpy_s(this->name, length, name);
-
+	
 	this->code = code;
 
 
@@ -27,10 +25,7 @@ commune::commune(const commune& other)
 
 	this->code = other.code;
 
-	this->male = other.male;
-	this->female = other.female;
-	this->year = other.year;
-
+	years = other.years;
 
 }
 
@@ -47,9 +42,7 @@ commune& commune::operator=(const commune& other)
 		}
 
 		this->code = other.code;
-		this->female = other.female;
-		this->male = other.male;
-		this->year = other.year;
+		this->years = other.years;
 	}
 	return *this;
 }
@@ -68,23 +61,41 @@ commune::~commune()
 
 }
 
-unsigned commune::getPopulation()
+unsigned commune::getPopulation(unsigned int year)
 {
-	return this->male + this->female;
+	for (auto& ye : years) {
+		if (ye.year == year) {
+			return ye.male + ye.female;
+		}
+	}
+	return 0;
 }
 
 void commune::print()
 {
 
-	std::cout << this->name << " <" << this->code << "> F: " << this->female << " M: " << this->male << " " << std::endl;
+	std::cout << this->name << " <" << this->code << "> "   << std::endl;
 
 }
 
-unsigned int commune::getYear()
+
+void commune::print(unsigned int year)
 {
-	return this->year;
+	std::cout << this->name << " <" << this->code << "> ";
+
+	for (const auto& y : years) {
+		if (y.year == year) {
+			std::cout << "F: " << y.female<< " M: " << y.male << " Population: " << this->getPopulation(year) << std::endl;
+		}
+	}
+
+	
 }
 
+void commune::addYear(year yearP)
+{
+	this->years.push_back(yearP);
+}
 
 
 const char* commune::getName()

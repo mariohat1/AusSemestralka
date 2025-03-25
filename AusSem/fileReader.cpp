@@ -9,6 +9,18 @@ void fileReader::skipLines(int count)
     }
 }
 
+commune* fileReader::containsCode(unsigned int code)
+{
+    for (auto& comm: this->data)
+    {
+        if (comm.getCode() == code)
+        {
+            return &comm;
+        }
+    }
+    return nullptr;
+}
+
 
 
 
@@ -69,14 +81,31 @@ std::vector<commune> fileReader::readFile()
             {
                 break;
             }
-            commune comm = commune(name.c_str(), code, male, female, currentYear);
+            year yearToADD;
+            yearToADD.female = female;
+            yearToADD.male = male;
+            yearToADD.year = currentYear;
+            
+            commune* comm = containsCode(code);
 
-            data.push_back(comm);
+           
+            if (comm == nullptr) {
+                commune newComm(name.c_str(), code); 
+                newComm.addYear(yearToADD);  
+                data.push_back(newComm); 
+            }
+            else {
+                
+                comm->addYear(yearToADD);
+            }
+           
 
+           
+            
         }
         inputReader.close();
     }
-	return data ;
+	return data;
 }
 
 fileReader::~fileReader()

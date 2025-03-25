@@ -5,8 +5,8 @@
 class algoritmus
 {
 private:
-	template<typename Iterator>
-	bool contains(Iterator begin, Iterator end, commune& comm);
+	
+	
 
 public:
 
@@ -15,7 +15,7 @@ public:
 		Iterator end,
 		unsigned int value,
 		unsigned int year,
-		std::function<bool(commune&, unsigned int  value)> predicate);
+		std::function<bool(commune&, unsigned int  value, unsigned int year)> predicate);
 
 	
 	
@@ -34,37 +34,23 @@ public:
 
 
 template<typename Iterator>
-auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value,unsigned int year, std::function<bool(commune&, unsigned int min)> predicate)
+auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value,unsigned int year, std::function<bool(commune&, unsigned int min, unsigned int year)> predicate)
 {
 	std::vector<commune> result;
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = *it;
-		if (iteratorValue.getYear() == year)
-		{
-			if (predicate(iteratorValue, value))
+		
+			if (predicate(iteratorValue, value, year))
 			{
 				result.push_back(iteratorValue);
 			}
-		}
+		
 
 
 	}
 	return result;
 }
 
-template<typename Iterator>
-inline bool algoritmus::contains(Iterator begin, Iterator end, commune& comm)
-{
-	for (Iterator i = begin; i < end; i++)
-	{
-		commune& iteratorValue = *i;
-		if (iteratorValue.getCode() == comm.getCode())
-		{
-			return true;
-		}
-	}
-	return false;
-}
 
 
 template<typename Iterator>
@@ -74,7 +60,7 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec,std::f
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = *it;
 		
-			if (predicate(iteratorValue, retazec) && !contains(result.begin(), result.end(), iteratorValue))
+			if (predicate(iteratorValue, retazec))
 			{
 				result.push_back(iteratorValue);
 			}
@@ -82,10 +68,6 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec,std::f
 		
 
 	}
-
-	
-	
-
 	return result;
 }
 

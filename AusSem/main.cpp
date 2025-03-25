@@ -4,6 +4,7 @@
 #include "fileReader.h"
 
 
+
 int main()
 {
 	SetConsoleOutputCP(1250);
@@ -13,11 +14,11 @@ int main()
 	std::vector<commune> data = reader.readFile();
 	std::vector<commune> dataFilter;
 	
-	auto hasMaxResidents = [](commune& comm, unsigned int max) -> bool {
-		return comm.getPopulation() <= max;
+	auto hasMaxResidents = [](commune& comm, unsigned int max, unsigned int year) -> bool {
+		return comm.getPopulation(year) <= max;
 		};
-	auto hasMinResidents = [](commune& comm, unsigned int min) -> bool {
-		return comm.getPopulation() >= min;
+	auto hasMinResidents = [](commune& comm, unsigned int min, unsigned int year) -> bool {
+		return comm.getPopulation(year) >= min;
 		};
 
 	auto containsStr = [](commune& comm, const char* retazec) -> bool {
@@ -30,8 +31,6 @@ int main()
 			return false;
 		}
 		
-
-
 
 		for (size_t i = 0; i < nameLen; i++)
 		{
@@ -59,24 +58,24 @@ int main()
 
 
 	
-	//dataFilter = algoritmus.filter(data.begin(), data.end(), "aß", containsStr);
+	//dataFilter = algoritmus.filter(data.begin(), data.end(), "öf", containsStr);
 	//for (auto& comm : dataFilter)
 	//{
 	//	
 	//	comm.print();
 	//}
 
-
+	unsigned int year = 2020;
 	
-	dataFilter = algoritmus.filter(data.begin(), data.end(), 100, 2024, hasMaxResidents);
+	/*dataFilter = algoritmus.filter(data.begin(), data.end(), 100, year, hasMaxResidents);
 	for  (auto& comm : dataFilter)
 	{
-		comm.print();
-	}
-	dataFilter = algoritmus.filter(data.begin(), data.end(), 15000, 2020, hasMinResidents);
+		comm.print(year);
+	}*/
+	dataFilter = algoritmus.filter(data.begin(), data.end(), 15000, year, hasMinResidents);
 	for (auto& comm : dataFilter)
 	{
-		comm.print();
+		comm.print(year);
 	}
 
 

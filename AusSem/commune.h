@@ -1,23 +1,27 @@
 #pragma once
 #include <iostream>
+#include "year.h"
 #include <Windows.h>
+#include <vector>
+
 class commune
 {
 private:
 	char* name = nullptr;
 	unsigned int  code = 0;
-	unsigned int male = 0;
-	unsigned int female = 0;
-	unsigned int year;
+	std::vector<year> years;
+	
 public:
-	commune(const  char* name, const  unsigned int code, unsigned int male, unsigned int female, unsigned int year);
+	commune(const  char* name, const  unsigned int code);
 	commune(const commune& other);
 	commune& operator=(const commune& other);
 	unsigned int getCode();
 	~commune();
-	unsigned getPopulation();
+	unsigned getPopulation(unsigned int yearP);
 	void print();
-	unsigned int getYear();
+
+	void print(unsigned int yearP);
+	void addYear(year yearP);
 	const char* getName();
 	
 };

@@ -35,5 +35,8 @@
     <ClInclude Include="algoritmus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="year.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
