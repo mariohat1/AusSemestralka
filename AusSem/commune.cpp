@@ -61,7 +61,7 @@ commune::~commune()
 
 }
 
-unsigned commune::getPopulation(unsigned int year)
+unsigned int  commune::getPopulation(unsigned int year)
 {
 	for (auto& ye : years) {
 		if (ye.year == year) {
