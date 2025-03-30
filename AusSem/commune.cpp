@@ -25,7 +25,7 @@ commune::commune(const commune& other)
 
 	this->code = other.code;
 
-	years = other.years;
+	this->years = other.years;
 
 }
 

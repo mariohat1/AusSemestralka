@@ -81,22 +81,22 @@ std::vector<commune> fileReader::readFile()
             {
                 break;
             }
-            year yearToADD;
-            yearToADD.female = female;
-            yearToADD.male = male;
-            yearToADD.year = currentYear;
+            year yearToAdd;
+            yearToAdd.female = female;
+            yearToAdd.male = male;
+            yearToAdd.year = currentYear;
             
             commune* comm = containsCode(code);
 
            
             if (comm == nullptr) {
                 commune newComm(name.c_str(), code); 
-                newComm.addYear(yearToADD);  
+                newComm.addYear(yearToAdd);  
                 data.push_back(newComm); 
             }
             else {
                 
-                comm->addYear(yearToADD);
+                comm->addYear(yearToAdd);
             }
            
 

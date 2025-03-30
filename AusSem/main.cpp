@@ -58,25 +58,25 @@ int main()
 
 
 	
-	//dataFilter = algoritmus.filter(data.begin(), data.end(), "öf", containsStr);
-	//for (auto& comm : dataFilter)
-	//{
-	//	
-	//	comm.print();
-	//}
-
-	unsigned int year = 2020;
-	
-	/*dataFilter = algoritmus.filter(data.begin(), data.end(), 100, year, hasMaxResidents);
-	for  (auto& comm : dataFilter)
-	{
-		comm.print(year);
-	}*/
-	dataFilter = algoritmus.filter(data.begin(), data.end(), 15000, year, hasMinResidents);
+	dataFilter = algoritmus.filter(data.begin(), data.end(), "öf", containsStr);
 	for (auto& comm : dataFilter)
 	{
-		comm.print(year);
+		
+		comm.print();
 	}
+
+	unsigned int year = 2022;
+	
+	//dataFilter = algoritmus.filter(data.begin(), data.end(), 100, year, hasMaxResidents);
+	//for  (auto& comm : dataFilter)
+	//{
+	//	comm.print(year);
+	//}
+	//dataFilter = algoritmus.filter(data.begin(), data.end(), 15000, year, hasMinResidents);
+	//for (auto& comm : dataFilter)
+	//{
+	//	comm.print(year);
+	//}
 
 
 
