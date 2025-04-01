@@ -185,7 +185,7 @@ namespace ds::mm {
         if (getCapacity() == newCapacity) {
             return;
         }
-        if (newCapacity < getAllocatedBlockCount()) {
+        if (newCapacity < this->getAllocatedBlockCount()) {
             releaseMemory(base_ + newCapacity);
         }
         void* newBase = std::realloc(base_, newCapacity * sizeof(BlockType));

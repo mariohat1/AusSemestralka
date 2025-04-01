@@ -24,6 +24,7 @@ commune* fileReader::containsCode(unsigned int code)
 
 
 
+
 std::vector<commune> fileReader::readFile()
 {
     for (unsigned int currentYear = 2020; currentYear <= 2024; ++currentYear) {
