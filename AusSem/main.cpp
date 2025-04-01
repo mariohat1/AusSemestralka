@@ -48,14 +48,14 @@ int main()
 
 		}
 		
-
+		
 		return found;
 
 
 
 		};
 
-
+	reader.loadHierarchy();
 
 	
 	dataFilter = algoritmus.filter(data.begin(), data.end(), "öf", containsStr);

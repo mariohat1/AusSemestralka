@@ -51,7 +51,7 @@ namespace ds::mm {
 	template<typename BlockType>
     void MemoryManager<BlockType>::releaseAndSetNull(BlockType*& pointer)
 	{
-		this->releaseMemory(pointer);
+		releaseMemory(pointer);
 		pointer = nullptr;
 	}
 

@@ -1,10 +1,14 @@
 #pragma once
+
+#include "libds/amt/explicit_hierarchy.h"
 #include <fstream>
 #include <vector>
 #include "commune.h"
 #include <sstream>
 #include <string>
-#include "libds/amt/explicit_hierarchy.h"
+
+
+
 
 
 
@@ -12,7 +16,9 @@ class fileReader
 {
 	
 private:
-	ds::amt::MultiWayExplicitHierarchy<int> hierarchy;
+	
+
+	ds::amt::MultiWayExplicitHierarchy<commune*> hierarchy;
 
 	std::ifstream inputReader;
 	std::vector<commune> data;
@@ -23,7 +29,8 @@ private:
 
 
 public:
-
+	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
+	ds::amt::MultiWayExplicitHierarchy<commune*> loadHierarchy();
 	std::vector<commune> readFile();
 	~fileReader();
 

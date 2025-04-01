@@ -21,6 +21,17 @@ commune* fileReader::containsCode(unsigned int code)
     return nullptr;
 }
 
+ds::amt::MultiWayExplicitHierarchy<commune*> fileReader::loadHierarchy()
+{
+    CommuneBlock communeBlock;
+    hierarchy.emplaceRoot();
+    commune comm("rakusko", 1);
+    communeBlock.data_ = &comm;
+    hierarchy.changeRoot(&communeBlock);
+    
+    return hierarchy;
+}
+
 
 
 
