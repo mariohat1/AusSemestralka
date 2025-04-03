@@ -21,6 +21,49 @@ commune* fileReader::containsCode(unsigned int code)
 	return nullptr;
 }
 
+void fileReader::cumulateHierarchy()
+{
+
+	std::vector<year> years(5);
+
+	hierarchy.processPostOrder(hierarchy.accessRoot(), [&](CommuneBlock* node) {
+		commune* comm = node->data_;
+		commune* parentData = nullptr;
+
+		if (node->parent_ != nullptr)
+		{
+			parentData = node->parent_->data_;
+			if (node->parent_->data_->getYears().empty())
+			{
+				for (size_t i = 0; i < years.size(); i++)
+				{
+					parentData->addYear(years[i]);
+				}
+
+
+			}
+			
+		}
+		for (size_t i = 0; i < comm->getYears().size(); i++)
+		{
+			if (parentData != nullptr)
+			{
+				parentData->getYears()[i].female += comm->getYears()[i].female;
+				parentData->getYears()[i].male += comm->getYears()[i].male;
+				parentData->getYears()[i].year = comm->getYears()[i].year;
+			}
+			years.clear();
+			years.resize(5);
+
+
+
+		}
+
+
+
+		});
+}
+
 ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy()
 {
 	hierarchy.emplaceRoot().data_ = new commune("rakusko", 1);
@@ -83,7 +126,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy()
 	}
 	line = "";
 	inputReader.close();
-	this->data = this->readFile();
+
 	inputReader.open("obce.csv");
 
 	while (std::getline(inputReader, line)) {
@@ -108,15 +151,12 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy()
 		CommuneBlock* grandParent = hierarchy.accessSon(*currentParent, grandParentIndex);
 		CommuneBlock* Parent = hierarchy.accessSon(*grandParent, parentIndex);
 		CommuneBlock* newParent = hierarchy.accessSon(*Parent, sonIndex);
-		
-		if (name == "Weppersdorf")
-		{
-			std::cout << "go";
-		}
+
+
 		CommuneBlock* son = &hierarchy.emplaceSon(*newParent, count);
-		
-		son->data_ =  containsCode(code);
-		
+
+		son->data_ = containsCode(code);
+
 		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
 
 
@@ -124,6 +164,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy()
 	}
 
 	inputReader.close();
+	this->cumulateHierarchy();
 
 	return this->hierarchy;
 }

@@ -60,7 +60,7 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec,std::f
 	int count = 0;
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = **it;
-		std::cout << iteratorValue.getName() << std::endl;
+		std::cout << iteratorValue.getPopulation(2020) << std::endl;
 		
 
 			if (predicate(iteratorValue, retazec))
