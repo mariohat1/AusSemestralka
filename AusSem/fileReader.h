@@ -21,7 +21,7 @@ private:
 	ds::amt::MultiWayExplicitHierarchy<commune*> hierarchy;
 
 	std::ifstream inputReader;
-	std::vector<commune> data;
+	std::vector<commune*> data;
 	void skipLines(int count);
 	commune* containsCode(unsigned int code);
 	
@@ -30,8 +30,9 @@ private:
 
 public:
 	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
-	ds::amt::MultiWayExplicitHierarchy<commune*> loadHierarchy();
-	std::vector<commune> readFile();
+	ds::amt::MultiWayExplicitHierarchy<commune*>& loadHierarchy();
+
+	std::vector<commune*>& readFile();
 	~fileReader();
 
 

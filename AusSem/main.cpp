@@ -2,6 +2,9 @@
 #include <iostream>
 #include "algoritmus.h"
 #include "fileReader.h"
+#include "libds/heap_monitor.h"
+#include "libds/amt/explicit_hierarchy.h"
+
 
 
 
@@ -11,7 +14,7 @@ int main()
 	SetConsoleCP(1250);
 	algoritmus algoritmus;
 	fileReader reader;
-	std::vector<commune> data = reader.readFile();
+	std::vector<commune*> data = reader.readFile();
 	std::vector<commune> dataFilter;
 	
 	auto hasMaxResidents = [](commune& comm, unsigned int max, unsigned int year) -> bool {
@@ -55,7 +58,7 @@ int main()
 
 		};
 
-	reader.loadHierarchy();
+	ds::amt::MultiWayExplicitHierarchy<commune*>& bingo = reader.loadHierarchy();
 
 	
 	dataFilter = algoritmus.filter(data.begin(), data.end(), "öf", containsStr);
@@ -64,9 +67,10 @@ int main()
 		
 		comm.print();
 	}
-
-	unsigned int year = 2022;
 	
+	
+	unsigned int year = 2022;
+
 	//dataFilter = algoritmus.filter(data.begin(), data.end(), 100, year, hasMaxResidents);
 	//for  (auto& comm : dataFilter)
 	//{

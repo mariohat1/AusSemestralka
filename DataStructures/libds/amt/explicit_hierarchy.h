@@ -55,7 +55,7 @@ namespace ds::amt {
 
 		IS<MultiWayExplicitHierarchyBlock<DataType>*>* sons_;
 	};
-
+	
 	template<typename DataType>
 	using MWEHBlock = MultiWayExplicitHierarchyBlock<DataType>;
 
