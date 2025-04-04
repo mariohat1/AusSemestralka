@@ -9,9 +9,9 @@ void fileReader::skipLines(int count)
 	}
 }
 
-commune* fileReader::containsCode(unsigned int code)
+commune* fileReader::containsCode(unsigned int code,std::vector<commune*> data)
 {
-	for (auto& comm : this->data)
+	for (auto& comm : data)
 	{
 		if (comm->getCode() == code)
 		{
@@ -23,9 +23,6 @@ commune* fileReader::containsCode(unsigned int code)
 
 void fileReader::cumulateHierarchy()
 {
-
-	std::vector<year> years(5);
-
 	hierarchy.processPostOrder(hierarchy.accessRoot(), [&](CommuneBlock* node) {
 		commune* comm = node->data_;
 		commune* parentData = nullptr;
@@ -33,31 +30,25 @@ void fileReader::cumulateHierarchy()
 		if (node->parent_ != nullptr)
 		{
 			parentData = node->parent_->data_;
-			if (node->parent_->data_->getYears().empty())
+			if (parentData->getYears().empty())
 			{
-				for (size_t i = 0; i < years.size(); i++)
+				for (size_t i = 0; i < comm->getYears().size(); i++)
 				{
-					parentData->addYear(years[i]);
+					year years = {};
+					parentData->addYear(years);
+					
 				}
-
-
 			}
-			
-		}
-		for (size_t i = 0; i < comm->getYears().size(); i++)
-		{
-			if (parentData != nullptr)
+
+			for (size_t i = 0; i < comm->getYears().size(); i++)
 			{
+
 				parentData->getYears()[i].female += comm->getYears()[i].female;
 				parentData->getYears()[i].male += comm->getYears()[i].male;
 				parentData->getYears()[i].year = comm->getYears()[i].year;
 			}
-			years.clear();
-			years.resize(5);
-
-
-
 		}
+
 
 
 
@@ -126,7 +117,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy()
 	}
 	line = "";
 	inputReader.close();
-
+	std::vector<commune*> data = readFile();
 	inputReader.open("obce.csv");
 
 	while (std::getline(inputReader, line)) {
@@ -154,8 +145,8 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy()
 
 
 		CommuneBlock* son = &hierarchy.emplaceSon(*newParent, count);
-
-		son->data_ = containsCode(code);
+		
+		son->data_ = containsCode(code, data);
 
 		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
 
@@ -175,8 +166,9 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy()
 
 
 
-std::vector<commune*>& fileReader::readFile()
+std::vector<commune*> fileReader::readFile()
 {
+		std::vector<commune*> data;
 	for (unsigned int currentYear = 2020; currentYear <= 2024; ++currentYear) {
 		inputReader.open(std::to_string(currentYear) + ".csv");
 
@@ -237,7 +229,7 @@ std::vector<commune*>& fileReader::readFile()
 			yearToAdd.male = male;
 			yearToAdd.year = currentYear;
 
-			commune* comm = containsCode(code);
+			commune* comm = containsCode(code, data);
 
 
 			if (comm == nullptr) {

@@ -22,7 +22,7 @@ public:
 
 	void print(unsigned int yearP);
 	void addYear(year yearP);
-	std::vector<year> getYears();
+	std::vector<year>& getYears();
 	const char* getName();
 	
 };

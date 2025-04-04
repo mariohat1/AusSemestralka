@@ -97,7 +97,7 @@ void commune::addYear(year yearP)
 	this->years.push_back(yearP);
 }
 
-std::vector<year> commune::getYears()
+std::vector<year>& commune::getYears()
 {
 	return this->years;
 }
