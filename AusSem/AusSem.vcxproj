@@ -136,14 +136,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="commune.cpp" />
-    <ClCompile Include="communeIterator.cpp" />
     <ClCompile Include="fileReader.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algoritmus.h" />
     <ClInclude Include="commune.h" />
-    <ClInclude Include="communeIterator.h" />
     <ClInclude Include="fileReader.h" />
     <ClInclude Include="year.h" />
   </ItemGroup>

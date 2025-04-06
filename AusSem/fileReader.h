@@ -30,7 +30,7 @@ private:
 
 public:
 	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
-	ds::amt::MultiWayExplicitHierarchy<commune*>& loadHierarchy();
+	ds::amt::MultiWayExplicitHierarchy<commune*>& loadHierarchy(std::vector<commune*>& data);
 
 	std::vector<commune*> readFile();
 	~fileReader();

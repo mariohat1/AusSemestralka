@@ -24,9 +24,6 @@
     <ClCompile Include="commune.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="communeIterator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileReader.h">
@@ -39,9 +36,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="year.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="communeIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,8 @@
 
 #include <functional>
 #include "commune.h"
+#include "libds/amt/explicit_hierarchy.h"
+
 class algoritmus
 {
 private:
@@ -9,7 +11,7 @@ private:
 
 
 public:
-
+	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
@@ -17,14 +19,17 @@ public:
 		unsigned int year,
 		std::function<bool(commune&, unsigned int  value, unsigned int year)> predicate);
 
-
-
-
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
 		const char*,
 		std::function<bool(commune&, const char*)> predicate);
+
+	template<typename Iterator>
+	auto filter(Iterator begin,
+		Iterator end, 
+		unsigned int level,
+		std::function<bool(CommuneBlock&, unsigned int level) > predicate);
 
 };
 
@@ -60,6 +65,7 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::
 	int count = 0;
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = **it;
+
 		if (predicate(iteratorValue, retazec))
 		{
 			result.push_back(iteratorValue);
@@ -68,6 +74,26 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::
 
 	}
 	return result;
+}
+
+template<typename Iterator>
+ auto algoritmus::filter(Iterator begin, Iterator end,unsigned int level, std::function<bool(CommuneBlock& node, unsigned int level)> predicate)
+{
+	std::vector<commune> result;
+	int count = 0;
+	for (Iterator it = begin; it != end; ++it) {
+		CommuneBlock* iteratorValue = it.blockType();
+		
+		if (predicate(*iteratorValue, level))
+		{
+			result.push_back(*iteratorValue->data_);
+		}
+
+
+	}
+	return result;
+
+
 }
 
 

@@ -57,6 +57,7 @@ commune::~commune()
 {
 	delete[] name;
 	name = nullptr;
+	this->years.clear();
 	
 
 }
