@@ -423,12 +423,7 @@ namespace ds::amt {
 		currentPosition_->currentNodeProcessed_ = true;
 		return currentPosition_->currentNode_->data_;
 	}
-	template<typename BlockType>
-	auto Hierarchy<BlockType>::DepthFirstIterator::blockType() -> BlockType*
-	{
-		
-		return currentPosition_->currentNode_;
-	}
+	
 
 	template<typename BlockType>
     void Hierarchy<BlockType>::DepthFirstIterator::savePosition(BlockType* currentNode)

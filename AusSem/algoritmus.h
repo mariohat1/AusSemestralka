@@ -29,7 +29,7 @@ public:
 	auto filter(Iterator begin,
 		Iterator end, 
 		unsigned int level,
-		std::function<bool(CommuneBlock&, unsigned int level) > predicate);
+		std::function<bool(commune&, unsigned int level) > predicate);
 
 };
 
@@ -65,7 +65,6 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::
 	int count = 0;
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = **it;
-
 		if (predicate(iteratorValue, retazec))
 		{
 			result.push_back(iteratorValue);
@@ -77,16 +76,17 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::
 }
 
 template<typename Iterator>
- auto algoritmus::filter(Iterator begin, Iterator end,unsigned int level, std::function<bool(CommuneBlock& node, unsigned int level)> predicate)
+ auto algoritmus::filter(Iterator begin, Iterator end,unsigned int level, std::function<bool(commune& node, unsigned int level)> predicate)
 {
 	std::vector<commune> result;
 	int count = 0;
 	for (Iterator it = begin; it != end; ++it) {
-		CommuneBlock* iteratorValue = it.blockType();
+		commune& iteratorValue = **it;
 		
-		if (predicate(*iteratorValue, level))
+		if (predicate(iteratorValue, level))
 		{
-			result.push_back(*iteratorValue->data_);
+
+			result.push_back(iteratorValue);
 		}
 
 

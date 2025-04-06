@@ -26,9 +26,9 @@ int main()
 		using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
 		ds::amt::MultiWayExplicitHierarchy<commune*>& bingo = reader.loadHierarchy(data);
 
-		auto hasType = [&](CommuneBlock& node, size_t level) -> bool {
+		auto hasType = [&](commune& comm, size_t level) -> bool {
 
-			return bingo.level(node) == level;
+			return comm.getLevel() == level;
 			};
 
 
@@ -172,6 +172,10 @@ int main()
 
 					}
 					std::cout << std::endl;
+					for (auto& comm : dataFilter)
+					{
+						comm.print(year);
+					}
 
 				}
 				if (predicateInput == "2") {

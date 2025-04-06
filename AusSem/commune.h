@@ -10,6 +10,7 @@ private:
 	char* name = nullptr;
 	unsigned int  code = 0;
 	std::vector<year> years;
+	size_t level;
 	
 public:
 	commune(const  char* name, const  unsigned int code);
@@ -24,6 +25,7 @@ public:
 	void addYear(year yearP);
 	std::vector<year>& getYears();
 	const char* getName();
-	
+	void setLevel(size_t level);
+	size_t getLevel();
 };
 

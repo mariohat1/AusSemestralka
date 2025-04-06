@@ -109,6 +109,16 @@ const char* commune::getName()
 	return this->name;
 }
 
+void commune::setLevel(size_t level)
+{
+	this->level = level;
+}
+
+size_t commune::getLevel()
+{
+	return this->level;
+}
+
 
 
 

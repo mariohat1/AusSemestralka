@@ -86,9 +86,9 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 
 		if (level == 1)
 		{
-		
-			hierarchy.emplaceSon(*currentParent, static_cast<size_t>(code) - 1).data_ = new commune(name.c_str(), code);
-			
+			commune* comm = new commune(name.c_str(), code);
+			hierarchy.emplaceSon(*currentParent, static_cast<size_t>(code) - 1).data_ = comm;
+			comm->setLevel(level);
 			
 
 
@@ -97,25 +97,26 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 
 		if (level == 2)
 		{
-
+			commune* comm = new commune(name.c_str(), code);
 			size_t parentIndex = (code / 10) - 1;
 			size_t sonIndex = (code % 10) - 1;
 			CommuneBlock* newParent = hierarchy.accessSon(*currentParent, parentIndex);
 			
-			hierarchy.emplaceSon(*newParent, sonIndex).data_ = new commune(name.c_str(), code);
-			
+			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
+			comm->setLevel(level);
 
 		}
 
 
 		if (level == 3) {
+			commune* comm = new commune(name.c_str(), code);
 			size_t grandParentIndex = (code / 100) - 1;
 			size_t parentIndex = ((code % 100) / 10) - 1;
 			size_t sonIndex = (code % 10) - 1 > 0 ? (code % 10) - 1 : 0;
 			CommuneBlock* grandParent = hierarchy.accessSon(*currentParent, grandParentIndex);
 			CommuneBlock* newParent = hierarchy.accessSon(*grandParent, parentIndex);
-			hierarchy.emplaceSon(*newParent, sonIndex).data_ = new commune(name.c_str(), code);
-
+			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
+			comm->setLevel(level);
 
 		}
 	}
@@ -149,9 +150,9 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 
 
 		CommuneBlock* son = &hierarchy.emplaceSon(*newParent, count);
-
+		size_t level = 4;
 		son->data_ = containsCode(code, data);
-
+		son->data_->setLevel(level);
 		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
 
 
@@ -206,7 +207,7 @@ std::vector<commune*> fileReader::readFile()
 		unsigned int male = 0, female = 0, code = 0;
 		while (std::getline(inputReader, line))
 		{
-
+		
 			std::stringstream ss(line);
 
 			std::getline(ss, name, ';');
@@ -236,7 +237,7 @@ std::vector<commune*> fileReader::readFile()
 
 			 commune* comm = containsCode(code, data);
 
-
+			 
 			if (comm == nullptr) {
 				commune* newComm = new commune(name.c_str(), code);
 				newComm->addYear(yearToAdd);
