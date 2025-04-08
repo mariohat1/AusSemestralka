@@ -371,7 +371,7 @@ namespace ds::amt {
 	auto MultiWayExplicitHierarchy<DataType>::emplaceSon(BlockType& parent, size_t sonOrder) -> BlockType&
 	{
 		BlockType* newSon = AbstractMemoryStructure<BlockType>::memoryManager_->allocateMemory();
-		parent.sons_->insert(sonOrder).data_ = newSon;
+		parent.sons_->insert(sonOrder).data_= newSon;
 		newSon->parent_ = &parent;
 
 		return *newSon;

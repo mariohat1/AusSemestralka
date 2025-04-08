@@ -151,7 +151,8 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 
 		CommuneBlock* son = &hierarchy.emplaceSon(*newParent, count);
 		size_t level = 4;
-		son->data_ = containsCode(code, data);
+		commune* comm = containsCode(code, data);
+		son->data_ = comm;
 		son->data_->setLevel(level);
 		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
 
