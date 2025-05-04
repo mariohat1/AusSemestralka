@@ -46,6 +46,7 @@
     <ClCompile Include="tests\_details\console.cpp">
       <Filter>tests\_details</Filter>
     </ClCompile>
+    <ClCompile Include="table_analyzer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tests\_details\test.hpp">
@@ -191,6 +192,9 @@
     </ClInclude>
     <ClInclude Include="tests\adt\tree.test.h">
       <Filter>tests\adt</Filter>
+    </ClInclude>
+    <ClInclude Include="table_analyzer.h">
+      <Filter>complexities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

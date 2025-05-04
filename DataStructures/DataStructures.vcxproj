@@ -118,7 +118,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <BrowseInformation>true</BrowseInformation>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="complexities\complexity_analyzer.cpp" />
+    <ClCompile Include="table_analyzer.cpp" />
     <ClCompile Include="tests\_details\console.cpp" />
     <ClCompile Include="tests\_details\console_output.cpp" />
     <ClCompile Include="tests\_details\test.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="tests\_details\console.hpp" />
     <ClInclude Include="tests\_details\console_output.hpp" />
     <ClInclude Include="tests\_details\test.hpp" />
+    <ClInclude Include="table_analyzer.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="ds.natvis" />

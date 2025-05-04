@@ -86,7 +86,6 @@ namespace ds::amt {
 			bool operator==(const DepthFirstIterator& other) const;
 			bool operator!=(const DepthFirstIterator& other) const;
 			DataType& operator*();
-			BlockType* blockType();
 
 		protected:
 			void savePosition(BlockType* currentNode);
@@ -105,8 +104,6 @@ namespace ds::amt {
 			PreOrderHierarchyIterator(Hierarchy<BlockType>* hierarchy, BlockType* node);
 			PreOrderHierarchyIterator(const PreOrderHierarchyIterator& other);
 			PreOrderHierarchyIterator& operator++();
-			
-			
 		};
 
 		//----------
@@ -116,7 +113,7 @@ namespace ds::amt {
 		{
 		public:
 			PostOrderHierarchyIterator(Hierarchy<BlockType>* hierarchy, BlockType* node);
-			PostOrderHierarchyIterator(const PreOrderHierarchyIterator& other);
+			PostOrderHierarchyIterator(const PostOrderHierarchyIterator& other);
 			PostOrderHierarchyIterator& operator++();
 		};
 
@@ -423,7 +420,6 @@ namespace ds::amt {
 		currentPosition_->currentNodeProcessed_ = true;
 		return currentPosition_->currentNode_->data_;
 	}
-	
 
 	template<typename BlockType>
     void Hierarchy<BlockType>::DepthFirstIterator::savePosition(BlockType* currentNode)
@@ -509,7 +505,7 @@ namespace ds::amt {
 	}
 
 	template<typename BlockType>
-    Hierarchy<BlockType>::PostOrderHierarchyIterator::PostOrderHierarchyIterator(const PreOrderHierarchyIterator& other) :
+    Hierarchy<BlockType>::PostOrderHierarchyIterator::PostOrderHierarchyIterator(const PostOrderHierarchyIterator& other) :
 		Hierarchy<BlockType>::DepthFirstIterator::DepthFirstIterator(other)
 	{
 	}

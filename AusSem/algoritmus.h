@@ -65,6 +65,7 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::
 	int count = 0;
 	for (Iterator it = begin; it != end; ++it) {
 		commune& iteratorValue = **it;
+		
 		if (predicate(iteratorValue, retazec))
 		{
 			result.push_back(iteratorValue);

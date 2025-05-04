@@ -1,4 +1,5 @@
 #include "fileReader.h"
+#include "DuplicitTreap.h"
 
 void fileReader::skipLines(int count)
 {
@@ -86,9 +87,32 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 
 		if (level == 1)
 		{
+			const char* nameToAdd = name.c_str();
+			for (auto& data :this->geoDivisionTable)
+			{
+				std::cout << data.key_ << std::endl;
+			}
+
 			commune* comm = new commune(name.c_str(), code);
+			if (this->geoDivisionTable.contains(nameToAdd))
+			{
+				std::cout << "K¾úè už existuje: " << name << std::endl;
+			}
+
+			std::cout << "INSERT " << name << " | code: " << code << std::endl;
+
+			CommuneData data;
+			data.single = comm;
+			this->geoDivisionTable.insert(name, data,true);
+
+
+
+
 			hierarchy.emplaceSon(*currentParent, static_cast<size_t>(code) - 1).data_ = comm;
 			comm->setLevel(level);
+			
+			
+
 			
 
 
@@ -104,6 +128,9 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 			
 			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
 			comm->setLevel(level);
+			CommuneData data;
+			data.single = comm;
+			this->federalRepublicTable.insert(name, data,true);
 
 		}
 
@@ -117,6 +144,10 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 			CommuneBlock* newParent = hierarchy.accessSon(*grandParent, parentIndex);
 			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
 			comm->setLevel(level);
+			CommuneData data;
+			data.single = comm;
+			this->regionTable.insert(name, data,true);
+
 
 		}
 	}
@@ -156,6 +187,9 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 		son->data_->setLevel(level);
 		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
 
+		CommuneData data;
+		data.single = comm;
+		this->communeTable.insert(name, data,true);
 
 
 	}
@@ -262,6 +296,25 @@ std::vector<commune*> fileReader::readFile()
 
 fileReader::~fileReader()
 {
+	hierarchy.processPostOrder(hierarchy.accessRoot(), [](CommuneBlock* node) {
+		delete node->data_;
+		node->data_ = nullptr;
+		});
+
+	std::cout << geoDivisionTable.size() << std::endl;
+	std::cout << federalRepublicTable.size() << std::endl;
+	std::cout << regionTable.size() << std::endl;
+	std::cout << communeTable.size() << std::endl;
+	 geoDivisionTable.clear();
+	 federalRepublicTable.clear();
+	 regionTable.clear();
+	 
+	 communeTable.clear();
+	 std::cout << communeTable.size() << std::endl;
+	 
+
+	hierarchy.clear();
+
 	if (inputReader.is_open())
 	{
 		inputReader.close();

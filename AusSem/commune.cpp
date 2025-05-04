@@ -7,7 +7,7 @@ commune::commune(const  char* name, unsigned int code)
 	size_t length = strlen(name) + 1;
 	this->name = new char[length];
 	strcpy_s(this->name, length, name);
-	
+	this->level = 0;
 	this->code = code;
 
 
@@ -22,7 +22,7 @@ commune::commune(const commune& other)
 		strcpy_s(name, length, other.name);
 
 	}
-
+	this->level = other.level;
 	this->code = other.code;
 
 	this->years = other.years;

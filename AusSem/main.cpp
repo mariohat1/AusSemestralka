@@ -1,131 +1,119 @@
-#include <Windows.h>
 #include <iostream>
 #include "algoritmus.h"
 #include "fileReader.h"
 #include "libds/heap_monitor.h"
 #include "libds/amt/explicit_hierarchy.h"
 #include "memory"
+#include <windows.h>
 
-#include <conio.h>
+#include "hierarchyIterator.h"
+#include "levelThree.h"
+
+auto hasType = [&](commune& comm, size_t level) -> bool {
+
+	return comm.getLevel() == level;
+	};
 
 
+auto hasMaxResidents = [](commune& comm, unsigned int max, unsigned int year) -> bool {
+	return comm.getPopulation(year) <= max;
+	};
+auto hasMinResidents = [](commune& comm, unsigned int min, unsigned int year) -> bool {
+	return comm.getPopulation(year) >= min;
+	};
 
+auto containsStr = [](commune& comm, const char* retazec) -> bool {
+	const char* name = comm.getName();
+	size_t nameLen = strlen(name);
+	size_t retazecLen = strlen(retazec);
+	bool found = true;
+	if (retazecLen > nameLen)
+	{
+		return false;
+	}
+	for (size_t i = 0; i < nameLen; i++)
+	{
+		found = true;
+		for (size_t j = 0; j < retazecLen; j++)
+		{
+			if (name[i + j] != retazec[j])
+			{
+				found = false;
+			}
+		}
+		if (found) {
+			break;
+		}
+	}
+
+	return found;
+	};
+using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
+using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
+using Table = ds::adt::Treap<std::string, CommuneData>;
+
+/*dataFilter = algoritmus.filter(bingo.begin(), bingo.end(), "öf", containsStr);
+for (auto& comm : dataFilter)
+{
+	comm.print();
+}*/
+
+
+/*unsigned int year = 2022;
+
+dataFilter = algoritmus.filter(data.begin(), data.end(), 100, year, hasMaxResidents);
+for (auto& comm : dataFilter)
+{
+	comm.print(year);
+}
+dataFilter = algoritmus.filter(data.begin(), data.end(), 15000, year, hasMinResidents);
+for (auto& comm : dataFilter)
+{
+	comm.print(year);
+}*/
 
 int main()
 {
 	initHeapMonitor();
 	{
-		
+
+
 		SetConsoleOutputCP(1250);
 		SetConsoleCP(1250);
 		algoritmus algoritmus;
 		fileReader reader;
 		std::vector<commune> dataFilter;
 		std::vector<commune*> data = reader.readFile();
-		using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
-		using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
 		ds::amt::MultiWayExplicitHierarchy<commune*>& bingo = reader.loadHierarchy(data);
+		iterator currentIteratorEnd(&bingo, nullptr);
+		hierarchyIterator hierarIterator(bingo);
 
-		auto hasType = [&](commune& comm, size_t level) -> bool {
+		Table& geoDivisionTable = reader.getGeoDivisionTable();
+		Table& communeTable = reader.getCommuneTable();
+		Table& federalTable = reader.getFederalTable();
 
-			return comm.getLevel() == level;
-			};
+		Table& regionTable = reader.getRegionTable();
+		levelThree three(geoDivisionTable, federalTable, regionTable, communeTable);
 
 
-		auto hasMaxResidents = [](commune& comm, unsigned int max, unsigned int year) -> bool {
-			return comm.getPopulation(year) <= max;
-			};
-		auto hasMinResidents = [](commune& comm, unsigned int min, unsigned int year) -> bool {
-			return comm.getPopulation(year) >= min;
-			};
 
-		auto containsStr = [](commune& comm, const char* retazec) -> bool {
-			const char* name = comm.getName();
-			size_t nameLen = strlen(name);
-			size_t retazecLen = strlen(retazec);
-			bool found = true;
-			if (retazecLen > nameLen)
-			{
-				return false;
-			}
-			for (size_t i = 0; i < nameLen; i++)
-			{
-				found = true;
-				for (size_t j = 0; j < retazecLen; j++)
+		std::string input;
+		std::cout << "0 ---- uroven 2" << std::endl;
+		std::cout << "1 ---- uroven 3" << std::endl;
+		std::cin >> input;
+		if (input == "0") {
+
+
+
+
+			while (true) {
+
+				CommuneBlock* currentPosition = hierarIterator.run();
+				if (currentPosition == nullptr)
 				{
-					if (name[i + j] != retazec[j])
-					{
-						found = false;
-					}
-				}
-				if (found) {
 					break;
 				}
-			}
-			destroy(name);
-			return found;
-			};
-
-		/*--------------------------------------------------------------------------------------------------------
-		--------------UROVEN 2------------------------------------------------------------------------------------
-		 */
-
-
-		std::string userInput;
-
-
-
-		CommuneBlock* currentPosition = bingo.accessRoot();
-		iterator currentIteratorPre(&bingo, currentPosition);
-		iterator currentIteratorEnd(&bingo, nullptr);
-
-
-
-		while (true) {
-
-			std::cout << "s ---- select son at index -- next argument [index]" << std::endl;
-			std::cout << "p ---- select predicate -- next argument [index] of predicate" << std::endl;
-			std::cout << "u ---- back to parent --no next arguments" << std::endl;
-			std::cout << "q ---- quit" << std::endl;
-			std::cout << "current Parent: " << currentPosition->data_->getName() << std::endl;
-
-			unsigned int count = 0;
-			if (!currentPosition->sons_->isEmpty())
-			{
-				for (auto it = currentPosition->sons_->begin(); it != currentPosition->sons_->end(); ++it)
-				{
-					CommuneBlock* comm = *it;
-					std::cout << count << " " << comm->data_->getName() << std::endl;
-					count++;
-				}
-
-
-			}
-
-
-			//--------------------------------------------------------------------------//
-
-
-			;
-			std::cin >> userInput;
-			if (userInput == "s" && !currentPosition->sons_->isEmpty())
-			{
-
-				unsigned int sonOrder;
-				std::string sonOrderInput;
-				std::cin >> sonOrderInput;
-				sonOrder = stoi(sonOrderInput);
-
-				if (sonOrder <= count)
-				{
-					currentPosition = bingo.accessSon(*currentPosition, sonOrder);
-				}
-				system("CLS");
-			}
-			else if (userInput == "p") {
 				std::string predicateInput;
-
-
 				std::cout << "0 ---- hasMinResidents" << std::endl;
 				std::cout << "1 ---- hasMaxResidents" << std::endl;
 				std::cout << "2 ---- containsStr" << std::endl;
@@ -182,7 +170,7 @@ int main()
 					iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
 					std::string strInput;
 					std::cout << "str:  ";
-					std::cin >> strInput;
+					std::getline(std::cin, strInput);
 					system("CLS");
 					std::cout << "Filtered: " << std::endl;
 					dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, strInput.c_str(), containsStr);
@@ -218,34 +206,17 @@ int main()
 					std::cout << std::endl;
 
 				}
-
-
 			}
-			else if (userInput == "u") {
-				system("CLS");
-				if (currentPosition->parent_ != nullptr)
+		}
+		else if (input == "1") {
+			while (true) {
+
+				int number = three.run();
+				if (number == -1)
 				{
-					currentPosition = bingo.accessParent(*currentPosition);
+					break;
 				}
-				else {
-					std::cout << "Parent does not exist" << std::endl;
-				}
-				std::cout << std::endl;
 
-
-			}
-			else if (userInput == "q") {
-
-				bingo.processPostOrder(bingo.accessRoot(), [](CommuneBlock* node) {
-					std::cout << node->data_ << std::endl;
-					delete node->data_;
-					node->data_ = nullptr;
-					});
-
-				data.clear();
-				bingo.clear();
-
-				break;
 			}
 
 
@@ -254,43 +225,29 @@ int main()
 		}
 
 	}
-	_CrtDumpMemoryLeaks();
-
-
-
-
-
-
-
-
-
-
-
-	/*dataFilter = algoritmus.filter(bingo.begin(), bingo.end(), "öf", containsStr);
-	for (auto& comm : dataFilter)
-	{
-		comm.print();
-	}*/
-
-
-	/*unsigned int year = 2022;
-
-	dataFilter = algoritmus.filter(data.begin(), data.end(), 100, year, hasMaxResidents);
-	for (auto& comm : dataFilter)
-	{
-		comm.print(year);
-	}
-	dataFilter = algoritmus.filter(data.begin(), data.end(), 15000, year, hasMinResidents);
-	for (auto& comm : dataFilter)
-	{
-		comm.print(year);
-	}*/
-
-
-
-
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

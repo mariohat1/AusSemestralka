@@ -38,5 +38,14 @@
     <ClInclude Include="year.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DuplicitTreap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hierarchyIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="levelThree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
