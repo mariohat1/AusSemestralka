@@ -225,7 +225,7 @@ namespace ds::adt {
 
         size_t size() const override;
         void clear() override;
-        void insert(const K& key, CommuneData<T> data, bool allowDuplicits);
+        void insert(const K& key,T data, bool allowDuplicits);
         void insert(const K& key, T data) override;
         bool tryFind(const K& key, T*& data) const override;
         T remove(const K& key) override;
@@ -810,7 +810,7 @@ namespace ds::adt {
     }
 
     template<typename K, typename T, typename ItemType>
-    inline void GeneralBinarySearchTree<K, T, ItemType>::insert(const K& key, CommuneData<T> data, bool allowDuplicits)
+    inline void GeneralBinarySearchTree<K, T, ItemType>::insert(const K& key, T data, bool allowDuplicits)
     {
         
         BSTNodeType* newNode = nullptr;

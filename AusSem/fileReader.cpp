@@ -101,7 +101,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 
 			std::cout << "INSERT " << name << " | code: " << code << std::endl;
 
-			TableData data;
+			CommuneData data;
 			data.single = comm;
 			this->geoDivisionTable.insert(name, data,true);
 
@@ -128,7 +128,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 			
 			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
 			comm->setLevel(level);
-			TableData data;
+			CommuneData data;
 			data.single = comm;
 			this->federalRepublicTable.insert(name, data,true);
 
@@ -144,7 +144,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 			CommuneBlock* newParent = hierarchy.accessSon(*grandParent, parentIndex);
 			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
 			comm->setLevel(level);
-			TableData data;
+			CommuneData data;
 			data.single = comm;
 			this->regionTable.insert(name, data,true);
 
@@ -187,7 +187,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 		son->data_->setLevel(level);
 		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
 
-		TableData data;
+		CommuneData data;
 		data.single = comm;
 		this->communeTable.insert(name, data,true);
 

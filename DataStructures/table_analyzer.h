@@ -14,12 +14,10 @@ namespace ds::utils
 
     protected:
         void growToSize(Table& structure, size_t size) override;
-
-       
         int getRandomData() const;
-
-    
+            
     private:
+        
         std::default_random_engine rngData_;
         std::default_random_engine rngIndex_;
         size_t index_;
@@ -66,10 +64,13 @@ namespace ds::utils
     template<class Table>
     inline void TableAnalyzer<Table>::growToSize(Table& structure, size_t size)
     {
-        const size_t toInsert = size - structure.size();
-        for (size_t i = 0; i < toInsert; ++i)
+      
+        const size_t toInsert = structure.size();
+        for (size_t i = toInsert; i < size; ++i)
         {
-            structure.insert(i,i);
+            TableData<int> data;
+            data.single = i;
+            structure.insert(i, data);
         }
 
     }
@@ -80,19 +81,23 @@ namespace ds::utils
         return this->data_;
     }
 
+   
+
     template<class Table>
     inline TableInsertAnalyzer<Table>::TableInsertAnalyzer(const std::string& name) :TableAnalyzer<Table>(name)
-    {
+    {   
+        
 
     }
 
     template<class Table>
     inline void TableInsertAnalyzer<Table>::executeOperation(Table& structure)
     {
-        
+        int key = structure.size();
+        TableData<int> data;
+        data.single = key;
         structure.insert(key, data);
         
-
 
     }
 
@@ -104,12 +109,12 @@ namespace ds::utils
     template<class Table>
     inline void TableFindAnalyzer<Table>::executeOperation(Table& structure)
     {
-        int key = this->getRandomData();
+        int key = structure.size() - 1;
         structure.find(key);
     }
     inline TablesAnalyzer::TablesAnalyzer() : CompositeAnalyzer("Tables") {
-        this->addAnalyzer(std::make_unique<TableInsertAnalyzer<ds::adt::Treap<int, int>>>("table-insert"));
-        this->addAnalyzer(std::make_unique<TableFindAnalyzer<ds::adt::Treap<int, int>>>("table-find"));
+        this->addAnalyzer(std::make_unique<TableInsertAnalyzer<ds::adt::Treap<int, TableData<int>>>>("table-insert"));
+        this->addAnalyzer(std::make_unique<TableFindAnalyzer<ds::adt::Treap<int, TableData<int>>>>("table-find"));
     
     }
 

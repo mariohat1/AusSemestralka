@@ -4,18 +4,18 @@
 class levelThree
 {
 private:
-    using TableData = CommuneData<commune*>;
-    using Table = ds::adt::Treap<std::string, TableData>;
+    using CommuneData = TableData<commune*>;
+    using Table = ds::adt::Treap<std::string, CommuneData>;
     Table& geoDivisionTable;
     Table& federalRepublicTable;
     Table& regionTable;
     Table& communeTable;
          
 public:
-	levelThree(ds::adt::Treap<std::string, TableData>& geoDivision,
-        ds::adt::Treap<std::string, TableData>& federalRepublic,
-        ds::adt::Treap<std::string, TableData>& region,
-        ds::adt::Treap<std::string, TableData>& commune)
+	levelThree(ds::adt::Treap<std::string, CommuneData>& geoDivision,
+        ds::adt::Treap<std::string, CommuneData>& federalRepublic,
+        ds::adt::Treap<std::string, CommuneData>& region,
+        ds::adt::Treap<std::string, CommuneData>& commune)
         : geoDivisionTable(geoDivision), federalRepublicTable(federalRepublic),
         regionTable(region), communeTable(commune) {
     }
@@ -61,7 +61,7 @@ public:
 
         std::getline(std::cin, key);
 
-        CommuneData<commune*>* data = nullptr;
+        TableData<commune*>* data = nullptr;
         bool found = table.tryFind(key,data);
         if (found)
         {

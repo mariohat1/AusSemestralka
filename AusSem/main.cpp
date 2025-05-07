@@ -50,8 +50,8 @@ auto containsStr = [](commune& comm, const char* retazec) -> bool {
 	};
 using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
 using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
-using TableData = CommuneData<commune*>;
-using Table = ds::adt::Treap<std::string, TableData>;
+using CommuneData = TableData<commune*>;
+using Table = ds::adt::Treap<std::string, CommuneData>;
 
 /*dataFilter = algoritmus.filter(bingo.begin(), bingo.end(), "öf", containsStr);
 for (auto& comm : dataFilter)
@@ -89,11 +89,11 @@ int main()
 		iterator currentIteratorEnd(&bingo, nullptr);
 		hierarchyIterator hierarIterator(bingo);
 
-		Table& geoDivisionTable = reader.getGeoDivisionTable();
-		Table& communeTable = reader.getCommuneTable();
-		Table& federalTable = reader.getFederalTable();
+		Table geoDivisionTable = reader.getGeoDivisionTable();
+		Table communeTable = reader.getCommuneTable();
+		Table federalTable = reader.getFederalTable();
 
-		Table& regionTable = reader.getRegionTable();
+		Table regionTable = reader.getRegionTable();
 		levelThree three(geoDivisionTable, federalTable, regionTable, communeTable);
 
 

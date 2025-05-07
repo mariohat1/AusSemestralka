@@ -4,10 +4,10 @@
 #include "libds/amt/implicit_sequence.h"
 
 template<typename T>
-struct CommuneData {
+struct TableData {
 
     using Sequence = ds::amt::ImplicitSequence<T>;
-    T single = nullptr;
+    T single;
     Sequence* duplicit = nullptr;
 
     void addDuplicit(T comm) {
@@ -17,13 +17,13 @@ struct CommuneData {
         }
         duplicit->insertLast().data_ = single;
     }
-    bool operator==(const CommuneData& other) const {
+    bool operator==(const TableData& other) const {
         return this->single == other.single && this->duplicit == other.duplicit;
         
     }
       
 
-    ~CommuneData() {
+    ~TableData() {
         if (this->duplicit != nullptr)
         {
             delete this->duplicit;
