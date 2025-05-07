@@ -3,13 +3,14 @@
 #include "commune.h"
 #include "libds/amt/implicit_sequence.h"
 
-
+template<typename T>
 struct CommuneData {
-    using Sequence = ds::amt::ImplicitSequence<commune*>;
-    commune* single = nullptr;
+
+    using Sequence = ds::amt::ImplicitSequence<T>;
+    T single = nullptr;
     Sequence* duplicit = nullptr;
 
-    void addDuplicit(commune* comm) {
+    void addDuplicit(T comm) {
         if (duplicit == nullptr) {
             duplicit = new Sequence();
             duplicit->insertLast().data_ = comm;

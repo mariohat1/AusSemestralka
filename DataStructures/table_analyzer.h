@@ -15,6 +15,9 @@ namespace ds::utils
     protected:
         void growToSize(Table& structure, size_t size) override;
 
+       
+        int getRandomData() const;
+
     
     private:
         std::default_random_engine rngData_;
@@ -66,13 +69,19 @@ namespace ds::utils
         const size_t toInsert = size - structure.size();
         for (size_t i = 0; i < toInsert; ++i)
         {
-            structure.push_back(rngData_());
+            structure.insert(i,i);
         }
 
     }
 
     template<class Table>
-    inline TableInsertAnalyzer<Table>::TableInsertAnalyzer(const std::string& name) :TableAnalyzer(name)
+    inline int TableAnalyzer<Table>::getRandomData() const
+    {
+        return this->data_;
+    }
+
+    template<class Table>
+    inline TableInsertAnalyzer<Table>::TableInsertAnalyzer(const std::string& name) :TableAnalyzer<Table>(name)
     {
 
     }
@@ -80,20 +89,27 @@ namespace ds::utils
     template<class Table>
     inline void TableInsertAnalyzer<Table>::executeOperation(Table& structure)
     {
+        
+        structure.insert(key, data);
+        
+
+
     }
 
     template<class Table>
-    inline TableFindAnalyzer<Table>::TableFindAnalyzer(const std::string& name)
+    inline TableFindAnalyzer<Table>::TableFindAnalyzer(const std::string& name) :TableAnalyzer<Table>(name)
     {
     }
 
     template<class Table>
     inline void TableFindAnalyzer<Table>::executeOperation(Table& structure)
     {
+        int key = this->getRandomData();
+        structure.find(key);
     }
     inline TablesAnalyzer::TablesAnalyzer() : CompositeAnalyzer("Tables") {
-        this->addAnalyzer(std::make_unique<TableInsertAnalyzer<ds::adt::Table<int, int>>>("table-insert"));
-        this->addAnalyzer(std::make_unique<TableFindAnalyzer<ds::adt::Table<int, int>>>("table-find"));
+        this->addAnalyzer(std::make_unique<TableInsertAnalyzer<ds::adt::Treap<int, int>>>("table-insert"));
+        this->addAnalyzer(std::make_unique<TableFindAnalyzer<ds::adt::Treap<int, int>>>("table-find"));
     
     }
 

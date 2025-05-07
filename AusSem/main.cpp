@@ -50,7 +50,8 @@ auto containsStr = [](commune& comm, const char* retazec) -> bool {
 	};
 using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
 using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
-using Table = ds::adt::Treap<std::string, CommuneData>;
+using TableData = CommuneData<commune*>;
+using Table = ds::adt::Treap<std::string, TableData>;
 
 /*dataFilter = algoritmus.filter(bingo.begin(), bingo.end(), "öf", containsStr);
 for (auto& comm : dataFilter)
@@ -170,6 +171,7 @@ int main()
 					iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
 					std::string strInput;
 					std::cout << "str:  ";
+					std::cin.ignore();
 					std::getline(std::cin, strInput);
 					system("CLS");
 					std::cout << "Filtered: " << std::endl;

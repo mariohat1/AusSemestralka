@@ -13,8 +13,8 @@ class fileReader
 {
 	
 private:
-		
-	using Table = ds::adt::Treap<std::string, CommuneData>;
+	using TableData = CommuneData<commune*>;
+	using Table = ds::adt::Treap<std::string, TableData>;
 	ds::amt::MultiWayExplicitHierarchy<commune*> hierarchy;
 	Table geoDivisionTable;
 	Table federalRepublicTable;

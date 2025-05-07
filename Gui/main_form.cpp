@@ -3,6 +3,7 @@
 #include <tests/root.h>
 #include <complexities/list_analyzer.h>
 #include <msclr\marshal_cppstd.h>
+#include <table_analyzer.h>
 
 namespace WF = System::Windows::Forms;
 namespace Col = System::Collections::Generic;
@@ -63,7 +64,7 @@ std::vector<std::unique_ptr<ds::utils::Analyzer>> createAnalyzers()
 	
 	
 	analyzers.emplace_back(std::make_unique<ds::utils::ListsAnalyzer>());
-
+	analyzers.emplace_back(std::make_unique<ds::utils::TablesAnalyzer>());
 	return analyzers;
 }
 
