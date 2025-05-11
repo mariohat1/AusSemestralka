@@ -82,19 +82,19 @@ int main()
 		SetConsoleOutputCP(1250);
 		SetConsoleCP(1250);
 		algoritmus algoritmus;
-		fileReader reader;
+		fileReader* reader = new fileReader;
 		std::vector<commune> dataFilter;
-		std::vector<commune*> data = reader.readFile();
-		ds::amt::MultiWayExplicitHierarchy<commune*>& bingo = reader.loadHierarchy(data);
+		std::vector<commune*> data = reader->readFile();
+		ds::amt::MultiWayExplicitHierarchy<commune*>& bingo = reader->loadHierarchy(data);
 		iterator currentIteratorEnd(&bingo, nullptr);
-		hierarchyIterator hierarIterator(bingo);
+		hierarchyIterator* hierarIterator =  new hierarchyIterator(&bingo);
 
-		Table geoDivisionTable = reader.getGeoDivisionTable();
-		Table communeTable = reader.getCommuneTable();
-		Table federalTable = reader.getFederalTable();
+		Table& geoDivisionTable = reader->getGeoDivisionTable();
+		Table& communeTable = reader->getCommuneTable();
+		Table& federalTable = reader->getFederalTable();
 
-		Table regionTable = reader.getRegionTable();
-		levelThree three(geoDivisionTable, federalTable, regionTable, communeTable);
+		Table& regionTable = reader->getRegionTable();
+		levelThree* three = new levelThree(geoDivisionTable, federalTable, regionTable, communeTable);
 
 
 
@@ -109,7 +109,7 @@ int main()
 
 			while (true) {
 
-				CommuneBlock* currentPosition = hierarIterator.run();
+				CommuneBlock* currentPosition = hierarIterator->run();
 				if (currentPosition == nullptr)
 				{
 					break;
@@ -213,7 +213,7 @@ int main()
 		else if (input == "1") {
 			while (true) {
 
-				int number = three.run();
+				int number = three->run();
 				if (number == -1)
 				{
 					break;
@@ -222,7 +222,11 @@ int main()
 			}
 
 
+			delete reader;
+			delete hierarIterator;
+			delete three;
 
+		
 
 		}
 

@@ -21,6 +21,9 @@ struct TableData {
         return this->single == other.single && this->duplicit == other.duplicit;
         
     }
+    bool operator!=(const TableData& other) const {
+        return this->single != other.single && this->duplicit != other.duplicit;
+    }
       
 
     ~TableData() {

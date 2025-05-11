@@ -434,9 +434,8 @@ namespace ds::adt {
     template<typename K, typename T>
     bool UnsortedImplicitSequenceTable<K, T>::equals(const ADT& other)
     {
-        // TODO 10
-        // po implementacii vymazte vyhodenie vynimky!
-        throw std::runtime_error("Not implemented yet");
+        return Table<K, T>::areEqual(*this, other);
+
     }
 
     //----------
@@ -478,9 +477,8 @@ namespace ds::adt {
     template<typename K, typename T>
     bool UnsortedExplicitSequenceTable<K, T>::equals(const ADT& other)
     {
-        // TODO 10
-        // po implementacii vymazte vyhodenie vynimky!
-        throw std::runtime_error("Not implemented yet");
+        return Table<K, T>::areEqual(*this, other);
+
     }
 
     //----------
@@ -543,9 +541,8 @@ namespace ds::adt {
     template<typename K, typename T>
     bool SortedSequenceTable<K, T>::equals(const ADT& other)
     {
-        // TODO 10
-        // po implementacii vymazte vyhodenie vynimky!
-        throw std::runtime_error("Not implemented yet");
+        return Table<K, T>::areEqual(*this, other);
+
     }
 
     template<typename K, typename T>
@@ -632,9 +629,7 @@ namespace ds::adt {
     template <typename K, typename T>
     bool HashTable<K, T>::equals(const ADT& other)
     {
-        // TODO 11
-        // po implementacii vymazte vyhodenie vynimky!
-        throw std::runtime_error("Not implemented yet");
+        return Table<K, T>::areEqual(*this, other);
     }
 
     template <typename K, typename T>
@@ -1084,9 +1079,7 @@ namespace ds::adt {
     template<typename K, typename T>
     bool BinarySearchTree<K, T>::equals(const ADT& other)
     {
-        // TODO 11
-        // po implementacii vymazte vyhodenie vynimky!
-        throw std::runtime_error("Not implemented yet");
+        return Table<K, T>::areEqual(*this, other);
     }
 
     //----------
@@ -1137,9 +1130,7 @@ namespace ds::adt {
     template<typename K, typename T>
     bool Treap<K, T>::equals(const ADT& other)
     {
-        // TODO 11
-        // po implementacii vymazte vyhodenie vynimky!
-        throw std::runtime_error("Not implemented yet");
+        return Table<K, T>::areEqual(*this, other);
     }
     
 }

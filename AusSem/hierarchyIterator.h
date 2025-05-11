@@ -9,21 +9,21 @@ private:
 	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
 	using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
 	CommuneBlock* currentPosition;
-	ds::amt::MultiWayExplicitHierarchy<commune*>& hierarchy;
+	ds::amt::MultiWayExplicitHierarchy<commune*>* hierarchy;
 	
 	int count = 0;
 
 
 public:
-	hierarchyIterator(ds::amt::MultiWayExplicitHierarchy<commune*>& hierarchy)
-		: hierarchy(hierarchy), currentPosition(hierarchy.accessRoot()) {
+	hierarchyIterator(ds::amt::MultiWayExplicitHierarchy<commune*>* hierarchy)
+		: hierarchy(hierarchy), currentPosition(hierarchy->accessRoot()) {
 
 	}
 	
 
 
 	CommuneBlock* run() {
-		std::cout << this->hierarchy.size()  << std::endl;
+		std::cout << this->hierarchy->size()  << std::endl;
 		while(true) {
 			std::string userInput;
 
@@ -59,7 +59,7 @@ public:
 
 			if (sonOrder <= count)
 			{
-				currentPosition = hierarchy.accessSon(*currentPosition, sonOrder);
+				currentPosition = hierarchy->accessSon(*currentPosition, sonOrder);
 			}
 			system("CLS");
 
@@ -69,7 +69,7 @@ public:
 		system("CLS");
 		if (currentPosition->parent_ != nullptr)
 		{
-			currentPosition = hierarchy.accessParent(*currentPosition);
+			currentPosition = hierarchy->accessParent(*currentPosition);
 		}
 		else {
 			std::cout << "Parent does not exist" << std::endl;

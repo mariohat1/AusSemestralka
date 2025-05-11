@@ -33,7 +33,7 @@ public:
         if (input == "0")
         {
 
-            this->printInfo(geoDivisionTable);
+            this->printInfo(this->geoDivisionTable);
         }
         else if (input == "1") {
             this->printInfo(federalRepublicTable);

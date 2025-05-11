@@ -36,7 +36,7 @@ public:
 
 	std::vector<commune*> readFile();
 	Table& getGeoDivisionTable() {
-		return regionTable;
+		return geoDivisionTable;
 	}
 	Table& getFederalTable() { 
 		return federalRepublicTable;
