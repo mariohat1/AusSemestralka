@@ -870,7 +870,7 @@ namespace ds::adt {
         newNode->data_.key_ = key;
         newNode->data_.data_ = data;
 
-        ++size_;
+        size_++;
         this->balanceTree(newNode);
     }
 
@@ -923,10 +923,11 @@ namespace ds::adt {
     void GeneralBinarySearchTree<K, T, ItemType>::removeNode(BSTNodeType* node)
     {
         BSTNodeType* parent = this->getHierarchy()->accessParent(*node);
-        BSTNodeType* son;
-        BSTNodeType* previousNode;
+  
+        
 
         switch (this->getHierarchy()->degree(*node)) {
+            BSTNodeType* son;
         case 0:
             if (this->getHierarchy()->isRoot(*node)) {
                 this->getHierarchy()->clear();
@@ -940,12 +941,12 @@ namespace ds::adt {
                     this->getHierarchy()->removeRightSon(*parent);
                 }
             }
+			break;
 
-            break;
         case 1:
-            son = this->getHierarchy()->hasLeftSon(*node) ? this->getHierarchy()->accessLeftSon(*node) : this->getHierarchy()->accessRightSon(*node);
+            son = this->getHierarchy()->hasLeftSon(*node) ? node->left_ : node->right_;
 
-            if (this->getHierarchy()->accessLeftSon(*node) == son) {
+            if (node->left_ == son) {
                 this->getHierarchy()->changeLeftSon(*node, nullptr);
             }
             else {
@@ -957,7 +958,7 @@ namespace ds::adt {
                 this->getHierarchy()->changeRoot(son);
             }
             else {
-                if (this->getHierarchy()->accessLeftSon(*parent) == node) {
+                if (parent->left_ == node) {
                     this->getHierarchy()->removeLeftSon(*parent);
                     this->getHierarchy()->changeLeftSon(*parent, son);
                 }
@@ -969,14 +970,14 @@ namespace ds::adt {
 
             break;
         case 2:
-            previousNode = this->getHierarchy()->accessLeftSon(*node);
+            BSTNodeType* previous = node->left_;
 
-            while (this->getHierarchy()->hasRightSon(*previousNode)) {
-                previousNode = this->getHierarchy()->accessRightSon(*previousNode);
+            while (this->getHierarchy()->hasRightSon(*previous)) {
+                previous = previous->right_;
             }
 
-            std::swap(node->data_, previousNode->data_);
-            this->removeNode(previousNode);
+            std::swap(node->data_, previous->data_);
+            this->removeNode(previous);
 
             break;
         }
@@ -995,9 +996,9 @@ namespace ds::adt {
         {
             if (key < node->data_.key_)
             {
-                if (this->getHierarchy()->hasLeftSon(*node))
+                if (node->left_ != nullptr)
                 {
-                    node = this->getHierarchy()->accessLeftSon(*node);
+                    node = node->left_;
                 }
                 else
                 {
@@ -1006,9 +1007,9 @@ namespace ds::adt {
             }
             else
             {
-                if (this->getHierarchy()->hasRightSon(*node))
+                if (node->right_ != nullptr)
                 {
-                    node = this->getHierarchy()->accessRightSon(*node);
+                    node = node->right_;
                 }
                 else
                 {
@@ -1023,19 +1024,19 @@ namespace ds::adt {
     template<typename K, typename T, typename ItemType>
     void GeneralBinarySearchTree<K, T, ItemType>::rotateLeft(BSTNodeType* node)
     {
-        BSTNodeType* leftSon = this->getHierarchy()->accessLeftSon(*node);
+        BSTNodeType* leftSon = node->left_;
         BSTNodeType* parent = this->getHierarchy()->accessParent(*node);
-        BSTNodeType* parentOfParent = this->getHierarchy()->accessParent(*parent);
+        BSTNodeType* grandParent = this->getHierarchy()->accessParent(*parent);
 
         this->getHierarchy()->changeRightSon(*parent, nullptr);
         this->getHierarchy()->changeLeftSon(*node, nullptr);
 
-        if (parentOfParent != nullptr) {
-            if (this->getHierarchy()->accessLeftSon(*parentOfParent) == parent) {
-                this->getHierarchy()->changeLeftSon(*parentOfParent, node);
+        if (grandParent != nullptr) {
+            if (grandParent->left_ == parent) {
+                this->getHierarchy()->changeLeftSon(*grandParent, node);
             }
             else {
-                this->getHierarchy()->changeRightSon(*parentOfParent, node);
+                this->getHierarchy()->changeRightSon(*grandParent, node);
             }
         }
 
@@ -1050,19 +1051,19 @@ namespace ds::adt {
     template<typename K, typename T, typename ItemType>
     void GeneralBinarySearchTree<K, T, ItemType>::rotateRight(BSTNodeType* node)
     {
-        BSTNodeType* rightSon = this->getHierarchy()->accessRightSon(*node);
+        BSTNodeType* rightSon = node->right_;
         BSTNodeType* parent = this->getHierarchy()->accessParent(*node);
-        BSTNodeType* parentOfParent = this->getHierarchy()->accessParent(*parent);
+        BSTNodeType* grandParent = this->getHierarchy()->accessParent(*parent);
 
         this->getHierarchy()->changeLeftSon(*parent, nullptr);
         this->getHierarchy()->changeRightSon(*node, nullptr);
 
-        if (parentOfParent != nullptr) {
-            if (this->getHierarchy()->accessLeftSon(*parentOfParent) == parent) {
-                this->getHierarchy()->changeLeftSon(*parentOfParent, node);
+        if (grandParent != nullptr) {
+            if (grandParent->left_ == parent) {
+                this->getHierarchy()->changeLeftSon(*grandParent, node);
             }
             else {
-                this->getHierarchy()->changeRightSon(*parentOfParent, node);
+                this->getHierarchy()->changeRightSon(*grandParent, node);
             }
         }
 
@@ -1094,7 +1095,6 @@ namespace ds::adt {
     void Treap<K, T>::removeNode(BSTNodeType* node)
     {
         node->data_.priority_ = std::numeric_limits<int>::min();
-
         while (this->getHierarchy()->degree(*node) == 2) {
             BSTNodeType* leftSon = this->getHierarchy()->accessLeftSon(*node);
             BSTNodeType* rightSon = this->getHierarchy()->accessRightSon(*node);
