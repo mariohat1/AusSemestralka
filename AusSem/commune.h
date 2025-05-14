@@ -19,11 +19,13 @@ public:
 	~commune();
 	unsigned getPopulation(unsigned int yearP);
 	void print();
+	unsigned int getPopulation(unsigned int year, unsigned int gender) const;
 
 	void print(unsigned int yearP);
 	void addYear(year yearP);
 	std::vector<year>& getYears();
-	const char* getName();
+	
+	const char* getName() const;
 	void setLevel(size_t level);
 	size_t getLevel();
 };

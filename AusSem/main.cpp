@@ -8,6 +8,7 @@
 
 #include "hierarchyIterator.h"
 #include "levelThree.h"
+#include "heapSort.h"
 
 auto hasType = [&](commune& comm, size_t level) -> bool {
 
@@ -48,6 +49,11 @@ auto containsStr = [](commune& comm, const char* retazec) -> bool {
 
 	return found;
 	};
+
+
+
+
+
 using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
 using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
 using CommuneData = TableData<commune*>;
@@ -77,10 +83,15 @@ int main()
 {
 	initHeapMonitor();
 	{
+		heapSort sorter;
+		
 
 
 		SetConsoleOutputCP(1250);
 		SetConsoleCP(1250);
+		
+		
+
 		algoritmus algoritmus;
 		fileReader* reader = new fileReader;
 		std::vector<commune> dataFilter;
@@ -108,7 +119,9 @@ int main()
 
 
 			while (true) {
-
+				
+				bool yearEntered = false;
+				unsigned int year;
 				CommuneBlock* currentPosition = hierarIterator->run();
 				if (currentPosition == nullptr)
 				{
@@ -122,9 +135,10 @@ int main()
 				std::cin >> predicateInput;
 
 				if (predicateInput == "0" || predicateInput == "1") {
+					system("CLS");
 					std::string yearInput;
 					std::string countInput;
-					unsigned int year;
+
 					int count;
 
 					std::cout << "year(2020,2021,2022,2023,2024):  ";
@@ -160,14 +174,12 @@ int main()
 						dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, count, year, hasMaxResidents);
 
 					}
-					std::cout << std::endl;
-					for (auto& comm : dataFilter)
-					{
-						comm.print(year);
-					}
+					yearEntered = true;
+
 
 				}
 				if (predicateInput == "2") {
+					system("CLS");
 					iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
 					std::string strInput;
 					std::cout << "str:  ";
@@ -176,13 +188,10 @@ int main()
 					system("CLS");
 					std::cout << "Filtered: " << std::endl;
 					dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, strInput.c_str(), containsStr);
-					for (auto& comm : dataFilter)
-					{
-						comm.print();
-					}
-					std::cout << std::endl;
+					
 				}
 				if (predicateInput == "3") {
+					system("CLS");
 					std::string typeInput;
 					int level;
 					std::cout << "0 ---- koren(krajina)" << std::endl;
@@ -200,15 +209,88 @@ int main()
 					iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
 					system("CLS");
 					dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, level, hasType);
+					
+
+					std::cout << std::endl;
+
+				}
+				std::cout << std::endl;
+				if (yearEntered) {
+					for (auto& comm : dataFilter)
+					{
+						comm.print(year);
+					}
+				}
+				else {
+					for (auto& comm : dataFilter)
+					{
+						comm.print();
+					}
+				}
+
+				std::cout << "Sort?" << std::endl;
+				std::cout << "0 ---- yes" << std::endl;
+				std::cout << "1 ---- no" << std::endl;
+				std::string sortInput;
+				std::cin >> sortInput;
+				if (sortInput == "0")
+				{
+					std::string compareInput;
+					std::cout << "0 ---- compareAlphabetical" << std::endl;
+					std::cout << "1 ---- comparePopulation" << std::endl;
+					std::cin >> compareInput;
+
+
+					if (compareInput == "0") {
+						auto compareAlphabetical = [](const commune& a, const commune& b) -> bool {
+							return a.getName() < b.getName();
+
+							};
+
+
+						std::cout << "Sorted: " << std::endl;
+						sorter.sort<commune>(dataFilter, compareAlphabetical);
+					}
+					else if (compareInput == "1") {
+						unsigned int compareYear;
+						std::cout << "Sorted: " << std::endl;
+						std::cout << "year: " << std::endl;
+						std::cin >> compareYear;
+						while (compareYear != 2020 && compareYear != 2021 && compareYear != 2022 && compareYear != 2023 && compareYear != 2024)
+						{
+							std::cout << "wrong year input";
+							std::cout << "year(2020,2021,2022,2023,2024):  ";
+							std::cin >> compareYear;
+						}
+						unsigned int compareGender;
+						std::cout << "0--- male" << std::endl;
+						std::cout << "1--- female" << std::endl;
+						std::cout << "2 --- total" << std::endl;
+						std::cin >> compareGender;
+						auto comparePopulation = [&](const commune& a, const commune& b) {
+							return a.getPopulation(compareYear, compareGender) < b.getPopulation(compareYear, compareGender);
+							};
+						
+						sorter.sort<commune>(dataFilter, comparePopulation);
+						
+						
+					}
+
+					
 					for (auto& comm : dataFilter)
 					{
 						comm.print();
 					}
 
-					std::cout << std::endl;
+
 
 				}
+				
+					
+				
+
 			}
+			
 		}
 		else if (input == "1") {
 			while (true) {

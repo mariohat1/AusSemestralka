@@ -47,5 +47,8 @@
     <ClInclude Include="levelThree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="heapSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

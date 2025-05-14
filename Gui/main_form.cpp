@@ -48,7 +48,7 @@ std::vector<std::unique_ptr<ds::tests::Test>> createTests()
 	
 	
 	// TODO 12
-	//adt->add_test(std::make_unique<ds::tests::SortTest>());
+	adt->add_test(std::make_unique<ds::tests::SortTest>());
 
 	root->add_test(std::move(mm));
 	root->add_test(std::move(amt));

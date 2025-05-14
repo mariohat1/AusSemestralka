@@ -79,6 +79,32 @@ void commune::print()
 
 }
 
+unsigned int commune::getPopulation(unsigned int year, unsigned int gender) const
+{
+	for  (auto& ye : this->years)
+	{
+		if (ye.year == year)
+		{
+			switch (gender)
+			{
+			case 0:
+				return ye.male;
+			case 1:
+				return ye.female;
+			case 2:
+				return ye.female + ye.male;
+			default:
+				break;
+			}
+
+		}
+
+	}
+	
+
+	return 0;
+}
+
 
 void commune::print(unsigned int year)
 {
@@ -104,7 +130,9 @@ std::vector<year>& commune::getYears()
 }
 
 
-const char* commune::getName()
+
+
+const char* commune::getName() const
 {
 	return this->name;
 }

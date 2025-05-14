@@ -144,6 +144,7 @@
     <ClInclude Include="commune.h" />
     <ClInclude Include="DuplicitTreap.h" />
     <ClInclude Include="fileReader.h" />
+    <ClInclude Include="heapSort.h" />
     <ClInclude Include="hierarchyIterator.h" />
     <ClInclude Include="levelThree.h" />
     <ClInclude Include="year.h" />

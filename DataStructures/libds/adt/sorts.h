@@ -167,9 +167,59 @@ namespace ds::adt
     template<typename T>
     void HeapSort<T>::sort(amt::ImplicitSequence<T>& is, std::function<bool(const T&, const T&)> compare)
     {
-        // TODO 12
-        // po implementacii vymazte vyhodenie vynimky!
-        throw std::runtime_error("Not implemented yet");
+        for (size_t i = 1; i < is.size(); i++)
+        {
+            bool swap = false;
+            size_t current = i;
+            do
+            {
+                swap = false;
+                size_t parent = (current - 1) / 2;
+                if (current > 0 && compare(is.access(parent)->data_, is.access(current)->data_))
+                {
+                    std::swap(is.access(current)->data_,is.access(parent)->data_);
+                    current = parent;
+                    swap = true;
+
+                }
+
+
+            } while (swap);
+        }
+
+        for (size_t i = is.size() - 1; i > 0; i--)
+        {
+            std::swap(is.access(0)->data_, is.access(i)->data_);
+            size_t current = 0;
+            bool swap = false;
+            do
+            {
+                swap = false;
+                size_t left = 2 * current + 1;
+                size_t right = 2 * current + 2;
+                size_t max;
+                if (left < i && right < i)
+                {
+                    max = compare(is.access(right)->data_, is.access(left)->data_) ? left : right;
+                }  else {
+                    max = left < i ? left : right;
+                }
+
+                if (max < i && compare(is.access(current)->data_, is.access(max)->data_))
+                {
+                    std::swap(is.access(current)->data_, is.access(max)->data_);
+                    current = max;
+                    swap = true;
+                }
+
+
+            } while (swap);
+
+
+
+
+        }
+        
     }
 
     template<typename T>
