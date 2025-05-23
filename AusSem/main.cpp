@@ -232,13 +232,14 @@ int main()
 					std::cin >> sortInput;
 					if (sortInput == "0")
 					{
+						system("CLS");
 						std::string compareInput;
 						std::cout << "0 ---- compareAlphabetical" << std::endl;
 						std::cout << "1 ---- comparePopulation" << std::endl;
 						std::cin >> compareInput;
 						if (compareInput == "0") {
 							auto compareAlphabetical = [](const commune& a, const commune& b) -> bool {
-								std::locale locale("german_Germany.1250");
+								std::locale locale("German_Germany.1250");
 								return locale(std::string(a.getName()), std::string(b.getName()));
 
 								};

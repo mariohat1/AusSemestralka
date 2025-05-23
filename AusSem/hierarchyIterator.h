@@ -57,7 +57,7 @@ public:
 			std::cin >> sonOrderInput;
 			sonOrder = stoi(sonOrderInput);
 
-			if (sonOrder <= count)
+			if (sonOrder <= this->count)
 			{
 				currentPosition = hierarchy->accessSon(*currentPosition, sonOrder);
 			}
@@ -87,14 +87,14 @@ public:
 		std::cout << "q ---- quit" << std::endl;
 		std::cout << "current Parent: " << currentPosition->data_->getName() << std::endl;
 
-		unsigned int count = 0;
+		this->count= 0;
 		if (!currentPosition->sons_->isEmpty())
 		{
 			for (auto it = currentPosition->sons_->begin(); it != currentPosition->sons_->end(); ++it)
 			{
 				CommuneBlock* comm = *it;
-				std::cout << count << " " << comm->data_->getName() << std::endl;
-				count++;
+				std::cout << this->count << " " << comm->data_->getName() << std::endl;
+				this->count++;
 			}
 
 

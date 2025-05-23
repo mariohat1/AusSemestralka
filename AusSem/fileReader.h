@@ -22,7 +22,7 @@ private:
 	Table communeTable;
 
 	std::ifstream inputReader;
-	
+	std::vector<commune*> communes;
 	void skipLines(int count);
 	commune* containsCode(unsigned int code, std::vector<commune*> data);
 	void cumulateHierarchy();

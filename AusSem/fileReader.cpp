@@ -104,18 +104,8 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 			CommuneData data;
 			data.single = comm;
 			this->geoDivisionTable.insert(name, data,true);
-
-
-
-
 			hierarchy.emplaceSon(*currentParent, static_cast<size_t>(code) - 1).data_ = comm;
 			comm->setLevel(level);
-			
-			
-
-			
-
-
 		}
 
 
@@ -124,8 +114,7 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 			commune* comm = new commune(name.c_str(), code);
 			size_t parentIndex = (code / 10) - 1;
 			size_t sonIndex = (code % 10) - 1;
-			CommuneBlock* newParent = hierarchy.accessSon(*currentParent, parentIndex);
-			
+			CommuneBlock* newParent = hierarchy.accessSon(*currentParent, parentIndex);			
 			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
 			comm->setLevel(level);
 			CommuneData data;
@@ -147,15 +136,13 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 			CommuneData data;
 			data.single = comm;
 			this->regionTable.insert(name, data,true);
-
-
 		}
 	}
 	line = "";
 	inputReader.close();
 	
 	inputReader.open("obce.csv");
-
+	int i = 0;
 	while (std::getline(inputReader, line)) {
 		std::string name, hierarchyCode;
 		int code = 0;
@@ -179,24 +166,19 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 		CommuneBlock* Parent = hierarchy.accessSon(*grandParent, parentIndex);
 		CommuneBlock* newParent = hierarchy.accessSon(*Parent, sonIndex);
 
-
 		CommuneBlock* son = &hierarchy.emplaceSon(*newParent, count);
 		size_t level = 4;
-		commune* comm = containsCode(code, data);
+		commune* comm = data[i];
 		son->data_ = comm;
 		son->data_->setLevel(level);
 		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
-
 		CommuneData data;
 		data.single = comm;
 		this->communeTable.insert(name, data,true);
-
-
-	}
-	
+		i++;
+	}	
 	inputReader.close();
 	this->cumulateHierarchy();
-
 	return this->hierarchy;
 }
 
@@ -208,11 +190,12 @@ ds::amt::MultiWayExplicitHierarchy<commune*>& fileReader::loadHierarchy(std::vec
 
 std::vector<commune*> fileReader::readFile()
 {
-	std::vector<commune*> data;
+	
+	int firstFile = false;
 	
 	for (unsigned int currentYear = 2020; currentYear <= 2024; ++currentYear) {
 		inputReader.open(std::to_string(currentYear) + ".csv");
-
+		
 
 
 		if (!inputReader.is_open()) {
@@ -240,6 +223,7 @@ std::vector<commune*> fileReader::readFile()
 		skipLines(3);
 		std::string name;
 		unsigned int male = 0, female = 0, code = 0;
+		unsigned int k = 0;
 		while (std::getline(inputReader, line))
 		{
 		
@@ -270,28 +254,29 @@ std::vector<commune*> fileReader::readFile()
 			yearToAdd.male = male;
 			yearToAdd.year = currentYear;
 
-			 commune* comm = containsCode(code, data);
 
 			 
-			if (comm == nullptr) {
+			if (!firstFile) {
 				commune* newComm = new commune(name.c_str(), code);
 				newComm->addYear(yearToAdd);
-				data.push_back(newComm);
+				communes.push_back(newComm);
+				
 			}
 			else {
 
-				comm->addYear(yearToAdd);
+				communes[k]->addYear(yearToAdd);
 			}
-
+			k++;
 
 
 
 		}
+		firstFile = true;
 
 		inputReader.close();
 	}
 
-	return data;
+	return communes;
 }
 
 fileReader::~fileReader()

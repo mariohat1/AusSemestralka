@@ -5,7 +5,6 @@
 #include <functional>
 #include <random>
 #include "../../../AusSem/DuplicitTreap.h"
-#include "../../../AusSem/DuplicitTreap.h"
 
 namespace ds::adt {
 
@@ -1094,7 +1093,7 @@ namespace ds::adt {
     template<typename K, typename T>
     void Treap<K, T>::removeNode(BSTNodeType* node)
     {
-        node->data_.priority_ = std::numeric_limits<int>::min();
+        node->data_.priority_ = this->rng_.min();
         while (this->getHierarchy()->degree(*node) == 2) {
             BSTNodeType* leftSon = this->getHierarchy()->accessLeftSon(*node);
             BSTNodeType* rightSon = this->getHierarchy()->accessRightSon(*node);
