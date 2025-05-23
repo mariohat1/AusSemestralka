@@ -3,7 +3,7 @@
 #include "year.h"
 #include <vector>
 
-class commune
+class TerritorialUnit
 {
 private:
 	char* name = nullptr;
@@ -12,11 +12,11 @@ private:
 	size_t level = 0;
 	
 public:
-	commune(const  char* name, const  unsigned int code);
-	commune(const commune& other);
-	commune& operator=(const commune& other);
+	TerritorialUnit(const  char* name, const  unsigned int code);
+	TerritorialUnit(const TerritorialUnit& other);
+	TerritorialUnit& operator=(const TerritorialUnit& other);
 	unsigned int getCode();
-	~commune();
+	~TerritorialUnit();
 	unsigned getPopulation(unsigned int yearP);
 	void print();
 	unsigned int getPopulation(unsigned int year, unsigned int gender) const;

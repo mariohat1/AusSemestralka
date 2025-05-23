@@ -11,20 +11,20 @@
 #include "levelThree.h"
 #include "heapSort.h"
 
-auto hasType = [&](commune& comm, size_t level) -> bool {
+auto hasType = [&](TerritorialUnit& comm, size_t level) -> bool {
 
 	return comm.getLevel() == level;
 	};
 
 
-auto hasMaxResidents = [](commune& comm, unsigned int max, unsigned int year) -> bool {
+auto hasMaxResidents = [](TerritorialUnit& comm, unsigned int max, unsigned int year) -> bool {
 	return comm.getPopulation(year) <= max;
 	};
-auto hasMinResidents = [](commune& comm, unsigned int min, unsigned int year) -> bool {
+auto hasMinResidents = [](TerritorialUnit& comm, unsigned int min, unsigned int year) -> bool {
 	return comm.getPopulation(year) >= min;
 	};
 
-auto containsStr = [](commune& comm, const char* retazec) -> bool {
+auto containsStr = [](TerritorialUnit& comm, const char* retazec) -> bool {
 	const char* name = comm.getName();
 	size_t nameLen = strlen(name);
 	size_t retazecLen = strlen(retazec);
@@ -55,9 +55,9 @@ auto containsStr = [](commune& comm, const char* retazec) -> bool {
 
 
 
-using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
-using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
-using CommuneData = TableData<commune*>;
+using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<TerritorialUnit*>;
+using iterator = ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>::PreOrderHierarchyIterator;
+using CommuneData = TableData<TerritorialUnit*>;
 using Table = ds::adt::Treap<std::string, CommuneData>;
 
 /*dataFilter = algoritmus.filter(bingo.begin(), bingo.end(), "öf", containsStr);
@@ -85,19 +85,13 @@ int main()
 	initHeapMonitor();
 	{
 		heapSort sorter;
-
-
-
 		SetConsoleOutputCP(1250);
 		SetConsoleCP(1250);
-
-
-
 		algoritmus algoritmus;
 		fileReader* reader = new fileReader;
-		std::vector<commune> dataFilter;
-		std::vector<commune*> data = reader->readFile();
-		ds::amt::MultiWayExplicitHierarchy<commune*>& bingo = reader->loadHierarchy(data);
+		std::vector<TerritorialUnit> dataFilter;
+		std::vector<TerritorialUnit*> data = reader->readFile();
+		ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& bingo = reader->loadHierarchy(data);
 		iterator currentIteratorEnd(&bingo, nullptr);
 		hierarchyIterator* hierarIterator = new hierarchyIterator(&bingo);
 
@@ -238,13 +232,13 @@ int main()
 						std::cout << "1 ---- comparePopulation" << std::endl;
 						std::cin >> compareInput;
 						if (compareInput == "0") {
-							auto compareAlphabetical = [](const commune& a, const commune& b) -> bool {
+							auto compareAlphabetical = [](const TerritorialUnit& a, const TerritorialUnit& b) -> bool {
 								std::locale locale("German_Germany.1250");
 								return locale(std::string(a.getName()), std::string(b.getName()));
 
 								};
 							std::cout << "Sorted: " << std::endl;
-							sorter.sort<commune>(dataFilter, compareAlphabetical);
+							sorter.sort<TerritorialUnit>(dataFilter, compareAlphabetical);
 						}
 						else if (compareInput == "1") {
 							unsigned int compareYear;
@@ -262,10 +256,10 @@ int main()
 							std::cout << "1--- female" << std::endl;
 							std::cout << "2 --- total" << std::endl;
 							std::cin >> compareGender;
-							auto comparePopulation = [&](const commune& a, const commune& b) {
+							auto comparePopulation = [&](const TerritorialUnit& a, const TerritorialUnit& b) {
 								return a.getPopulation(compareYear, compareGender) < b.getPopulation(compareYear, compareGender);
 								};
-							sorter.sort<commune>(dataFilter, comparePopulation);
+							sorter.sort<TerritorialUnit>(dataFilter, comparePopulation);
 						}
 						for (auto& comm : dataFilter)
 						{
@@ -288,6 +282,7 @@ int main()
 				break;
 			}
 		}
+		std::cout << dataFilter.size() << std::endl;
 		delete reader;
 		delete hierarIterator;
 		delete three;

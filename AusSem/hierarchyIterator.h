@@ -1,21 +1,22 @@
 #pragma once
 #include <iostream>
 #include <libds/amt/explicit_hierarchy.h>
-#include "commune.h"
+#include "TerritorialUnit.h"
+
 #include "fileReader.h"
 class hierarchyIterator
 {
 private:
-	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
-	using iterator = ds::amt::MultiWayExplicitHierarchy<commune*>::PreOrderHierarchyIterator;
+	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<TerritorialUnit*>;
+	using iterator = ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>::PreOrderHierarchyIterator;
 	CommuneBlock* currentPosition;
-	ds::amt::MultiWayExplicitHierarchy<commune*>* hierarchy;
+	ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>* hierarchy;
 	
 	int count = 0;
 
 
 public:
-	hierarchyIterator(ds::amt::MultiWayExplicitHierarchy<commune*>* hierarchy)
+	hierarchyIterator(ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>* hierarchy)
 		: hierarchy(hierarchy), currentPosition(hierarchy->accessRoot()) {
 
 	}

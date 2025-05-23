@@ -1,10 +1,9 @@
 #pragma once
-#include "DuplicitTreap.h"
-
+#include "TableData.h"
 class levelThree
 {
 private:
-    using CommuneData = TableData<commune*>;
+    using CommuneData = TableData<TerritorialUnit*>;
     using Table = ds::adt::Treap<std::string, CommuneData>;
     Table& geoDivisionTable;
     Table& federalRepublicTable;
@@ -61,7 +60,7 @@ public:
 
         std::getline(std::cin, key);
 
-        TableData<commune*>* data = nullptr;
+        TableData<TerritorialUnit*>* data = nullptr;
         bool found = table.tryFind(key,data);
         if (found)
         {
@@ -69,7 +68,7 @@ public:
             {
                 for (auto it = data->duplicit->begin(); it != data->duplicit->end(); ++it)
                 {
-                    commune& comm = **it;
+                    TerritorialUnit& comm = **it;
                     std::cout << "Najdene ";
                     comm.print();
                 }

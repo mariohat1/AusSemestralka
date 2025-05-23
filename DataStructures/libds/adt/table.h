@@ -4,7 +4,7 @@
 #include <libds/amt/explicit_hierarchy.h>
 #include <functional>
 #include <random>
-#include "../../../AusSem/DuplicitTreap.h"
+#include "../../../AusSem/TableData.h"
 
 namespace ds::adt {
 

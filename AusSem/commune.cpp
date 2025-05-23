@@ -1,6 +1,6 @@
-#include "commune.h"
+#include "TerritorialUnit.h"
 
-commune::commune(const  char* name, unsigned int code)
+TerritorialUnit::TerritorialUnit(const  char* name, unsigned int code)
 {
 
 
@@ -13,7 +13,7 @@ commune::commune(const  char* name, unsigned int code)
 
 }
 
-commune::commune(const commune& other)
+TerritorialUnit::TerritorialUnit(const TerritorialUnit& other)
 {
 	if (other.name && *other.name)
 	{
@@ -29,10 +29,12 @@ commune::commune(const commune& other)
 
 }
 
-commune& commune::operator=(const commune& other)
+TerritorialUnit& TerritorialUnit::operator=(const TerritorialUnit& other)
 {
 	if (this != &other)
 	{
+		delete[] name;
+		name = nullptr;
 		if (other.name && *other.name)
 		{
 			size_t length = strlen(other.name) + 1;
@@ -47,13 +49,13 @@ commune& commune::operator=(const commune& other)
 	return *this;
 }
 
-unsigned int commune::getCode()
+unsigned int TerritorialUnit::getCode()
 {
 	return this->code;
 }
 
 
-commune::~commune()
+TerritorialUnit::~TerritorialUnit()
 {
 	delete[] name;
 	name = nullptr;
@@ -62,7 +64,7 @@ commune::~commune()
 
 }
 
-unsigned int  commune::getPopulation(unsigned int year)
+unsigned int  TerritorialUnit::getPopulation(unsigned int year)
 {
 	for (auto& ye : years) {
 		if (ye.year == year) {
@@ -72,14 +74,14 @@ unsigned int  commune::getPopulation(unsigned int year)
 	return 0;
 }
 
-void commune::print()
+void TerritorialUnit::print()
 {
 
 	std::cout << this->name << " <" << this->code << "> "   << std::endl;
 
 }
 
-unsigned int commune::getPopulation(unsigned int year, unsigned int gender) const
+unsigned int TerritorialUnit::getPopulation(unsigned int year, unsigned int gender) const
 {
 	for  (auto& ye : this->years)
 	{
@@ -106,7 +108,7 @@ unsigned int commune::getPopulation(unsigned int year, unsigned int gender) cons
 }
 
 
-void commune::print(unsigned int year)
+void TerritorialUnit::print(unsigned int year)
 {
 	std::cout << this->name << " <" << this->code << "> ";
 
@@ -119,12 +121,12 @@ void commune::print(unsigned int year)
 	
 }
 
-void commune::addYear(year yearP)
+void TerritorialUnit::addYear(year yearP)
 {
 	this->years.push_back(yearP);
 }
 
-std::vector<year>& commune::getYears()
+std::vector<year>& TerritorialUnit::getYears()
 {
 	return this->years;
 }
@@ -132,17 +134,17 @@ std::vector<year>& commune::getYears()
 
 
 
-const char* commune::getName() const
+const char* TerritorialUnit::getName() const
 {
 	return this->name;
 }
 
-void commune::setLevel(size_t level)
+void TerritorialUnit::setLevel(size_t level)
 {
 	this->level = level;
 }
 
-size_t commune::getLevel()
+size_t TerritorialUnit::getLevel()
 {
 	return this->level;
 }

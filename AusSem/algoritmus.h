@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include "commune.h"
+#include "TerritorialUnit.h"
 #include "libds/amt/explicit_hierarchy.h"
 
 class algoritmus
@@ -11,25 +11,25 @@ private:
 
 
 public:
-	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<commune*>;
+	using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<TerritorialUnit*>;
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
 		unsigned int value,
 		unsigned int year,
-		std::function<bool(commune&, unsigned int  value, unsigned int year)> predicate);
+		std::function<bool(TerritorialUnit&, unsigned int  value, unsigned int year)> predicate);
 
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end,
 		const char*,
-		std::function<bool(commune&, const char*)> predicate);
+		std::function<bool(TerritorialUnit&, const char*)> predicate);
 
 	template<typename Iterator>
 	auto filter(Iterator begin,
 		Iterator end, 
 		unsigned int level,
-		std::function<bool(commune&, unsigned int level) > predicate);
+		std::function<bool(TerritorialUnit&, unsigned int level) > predicate);
 
 };
 
@@ -39,11 +39,11 @@ public:
 
 
 template<typename Iterator>
-auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value, unsigned int year, std::function<bool(commune&, unsigned int min, unsigned int year)> predicate)
+auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value, unsigned int year, std::function<bool(TerritorialUnit&, unsigned int min, unsigned int year)> predicate)
 {
-	std::vector<commune> result;
+	std::vector<TerritorialUnit> result;
 	for (Iterator it = begin; it != end; ++it) {
-		commune& iteratorValue = **it;
+		TerritorialUnit& iteratorValue = **it;
 
 		if (predicate(iteratorValue, value, year))
 		{
@@ -59,12 +59,12 @@ auto algoritmus::filter(Iterator begin, Iterator end, unsigned int value, unsign
 
 
 template<typename Iterator>
-auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::function<bool(commune& comm, const char* retazec)> predicate)
+auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::function<bool(TerritorialUnit& comm, const char* retazec)> predicate)
 {
-	std::vector<commune> result;
+	std::vector<TerritorialUnit> result;
 	int count = 0;
 	for (Iterator it = begin; it != end; ++it) {
-		commune& iteratorValue = **it;
+		TerritorialUnit& iteratorValue = **it;
 		
 		if (predicate(iteratorValue, retazec))
 		{
@@ -77,12 +77,12 @@ auto algoritmus::filter(Iterator begin, Iterator end, const char* retazec, std::
 }
 
 template<typename Iterator>
- auto algoritmus::filter(Iterator begin, Iterator end,unsigned int level, std::function<bool(commune& node, unsigned int level)> predicate)
+ auto algoritmus::filter(Iterator begin, Iterator end,unsigned int level, std::function<bool(TerritorialUnit& node, unsigned int level)> predicate)
 {
-	std::vector<commune> result;
+	std::vector<TerritorialUnit> result;
 	int count = 0;
 	for (Iterator it = begin; it != end; ++it) {
-		commune& iteratorValue = **it;
+		TerritorialUnit& iteratorValue = **it;
 		
 		if (predicate(iteratorValue, level))
 		{

@@ -29,7 +29,7 @@
     <ClInclude Include="fileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="commune.h">
+    <ClInclude Include="TerritorialUnit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="algoritmus.h">
@@ -38,7 +38,7 @@
     <ClInclude Include="year.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DuplicitTreap.h">
+    <ClInclude Include="TableData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hierarchyIterator.h">

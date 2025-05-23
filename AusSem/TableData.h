@@ -1,6 +1,7 @@
 #pragma once
 #include "libds/adt/table.h"
-#include "commune.h"
+#include "TerritorialUnit.h"
+
 #include "libds/amt/implicit_sequence.h"
 
 template<typename T>

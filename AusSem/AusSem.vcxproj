@@ -141,8 +141,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algoritmus.h" />
-    <ClInclude Include="commune.h" />
-    <ClInclude Include="DuplicitTreap.h" />
+    <ClInclude Include="TerritorialUnit.h" />
+    <ClInclude Include="TableData.h" />
     <ClInclude Include="fileReader.h" />
     <ClInclude Include="heapSort.h" />
     <ClInclude Include="hierarchyIterator.h" />
