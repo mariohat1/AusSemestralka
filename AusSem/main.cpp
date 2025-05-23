@@ -11,45 +11,13 @@
 #include "levelThree.h"
 #include "heapSort.h"
 
-auto hasType = [&](TerritorialUnit& comm, size_t level) -> bool {
-
-	return comm.getLevel() == level;
-	};
 
 
-auto hasMaxResidents = [](TerritorialUnit& comm, unsigned int max, unsigned int year) -> bool {
-	return comm.getPopulation(year) <= max;
-	};
-auto hasMinResidents = [](TerritorialUnit& comm, unsigned int min, unsigned int year) -> bool {
-	return comm.getPopulation(year) >= min;
-	};
 
-auto containsStr = [](TerritorialUnit& comm, const char* retazec) -> bool {
-	const char* name = comm.getName();
-	size_t nameLen = strlen(name);
-	size_t retazecLen = strlen(retazec);
-	bool found = true;
-	if (retazecLen > nameLen)
-	{
-		return false;
-	}
-	for (size_t i = 0; i < nameLen; i++)
-	{
-		found = true;
-		for (size_t j = 0; j < retazecLen; j++)
-		{
-			if (name[i + j] != retazec[j])
-			{
-				found = false;
-			}
-		}
-		if (found) {
-			break;
-		}
-	}
 
-	return found;
-	};
+
+
+
 
 
 
@@ -162,12 +130,19 @@ int main()
 						system("CLS");
 						std::cout << "Filtered: " << std::endl;
 						if (predicateInput == "0") {
-							dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, count, year, hasMinResidents);
+							auto hasMinResidents = [&](TerritorialUnit& comm) -> bool {
+								return comm.getPopulation(year) >= count;
+								};
+
+
+							dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, hasMinResidents);
 
 						}
 						if (predicateInput == "1") {
-							dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, count, year, hasMaxResidents);
-
+							auto hasMaxResidents = [&](TerritorialUnit& comm) -> bool {
+								return comm.getPopulation(year) <= count;
+								};
+							dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, hasMaxResidents);
 						}
 						yearEntered = true;
 
@@ -182,7 +157,34 @@ int main()
 						std::getline(std::cin, strInput);
 						system("CLS");
 						std::cout << "Filtered: " << std::endl;
-						dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, strInput.c_str(), containsStr);
+						auto containsStr = [&](TerritorialUnit& comm) -> bool {
+							const char* name = comm.getName();
+							size_t nameLen = strlen(name);
+							size_t retazecLen = strlen(strInput.c_str());
+							bool found = true;
+							if (retazecLen > nameLen)
+							{
+								return false;
+							}
+							for (size_t i = 0; i < nameLen; i++)
+							{
+								found = true;
+								for (size_t j = 0; j < retazecLen; j++)
+								{
+									if (name[i + j] != strInput[j])
+									{
+										found = false;
+									}
+								}
+								if (found) {
+									break;
+								}
+							}
+
+							return found;
+							};
+
+						dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, containsStr);
 
 					}
 					if (predicateInput == "3") {
@@ -203,7 +205,14 @@ int main()
 						}
 						iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
 						system("CLS");
-						dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, level, hasType);
+						auto hasType = [&](TerritorialUnit& comm) -> bool {
+
+							return comm.getLevel() == level;
+							};
+
+
+
+						dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, hasType);
 						std::cout << std::endl;
 					}
 					std::cout << std::endl;
