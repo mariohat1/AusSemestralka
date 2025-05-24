@@ -10,295 +10,78 @@
 #include "hierarchyIterator.h"
 #include "levelThree.h"
 #include "heapSort.h"
+#include "FirstLevel.h"
 
-
-
-
-
-
-
-
-
-
-
-
-
-using CommuneBlock = ds::amt::MultiWayExplicitHierarchyBlock<TerritorialUnit*>;
-using iterator = ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>::PreOrderHierarchyIterator;
-using CommuneData = TableData<TerritorialUnit*>;
-using Table = ds::adt::Treap<std::string, CommuneData>;
-
-/*dataFilter = algoritmus.filter(bingo.begin(), bingo.end(), "öf", containsStr);
-for (auto& comm : dataFilter)
-{
-	comm.print();
-}*/
-
-
-/*unsigned int year = 2022;
-
-dataFilter = algoritmus.filter(data.begin(), data.end(), 100, year, hasMaxResidents);
-for (auto& comm : dataFilter)
-{
-	comm.print(year);
-}
-dataFilter = algoritmus.filter(data.begin(), data.end(), 15000, year, hasMinResidents);
-for (auto& comm : dataFilter)
-{
-	comm.print(year);
-}*/
 
 int main()
 {
 	initHeapMonitor();
-	{
-		heapSort sorter;
-		SetConsoleOutputCP(1250);
-		SetConsoleCP(1250);
-		algoritmus algoritmus;
-		fileReader* reader = new fileReader;
-		std::vector<TerritorialUnit> dataFilter;
-		std::vector<TerritorialUnit*> data = reader->readFile();
-		ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& bingo = reader->loadHierarchy(data);
-		iterator currentIteratorEnd(&bingo, nullptr);
-		hierarchyIterator* hierarIterator = new hierarchyIterator(&bingo);
 
-		Table& geoDivisionTable = reader->getGeoDivisionTable();
-		Table& communeTable = reader->getCommuneTable();
-		Table& federalTable = reader->getFederalTable();
-
-		Table& regionTable = reader->getRegionTable();
-		levelThree* three = new levelThree(geoDivisionTable, federalTable, regionTable, communeTable);
-
-
-
-		std::string input;
-		
-		
-		while (true) {
-			system("CLS");
-			std::cout << "0 ---- uroven 2" << std::endl;
-			std::cout << "1 ---- uroven 3" << std::endl;
-			std::cout << "q ---- quit" << std::endl;
-			std::cin >> input;
-			if (input == "0") {
-				while (true) {
-					bool yearEntered = false;
-					unsigned int year;
-					CommuneBlock* currentPosition = hierarIterator->run();
-					if (currentPosition == nullptr)
-					{
-						break;
-					}
-					std::string predicateInput;
-					std::cout << "0 ---- hasMinResidents" << std::endl;
-					std::cout << "1 ---- hasMaxResidents" << std::endl;
-					std::cout << "2 ---- containsStr" << std::endl;
-					std::cout << "3 ---- hasType" << std::endl;
-					std::cin >> predicateInput;
-
-					if (predicateInput == "0" || predicateInput == "1") {
-						system("CLS");
-						std::string yearInput;
-						std::string countInput;
-
-						int count;
-
-						std::cout << "year(2020,2021,2022,2023,2024):  ";
-						std::cin >> yearInput;
-						year = stoi(yearInput);
-						while (year != 2020 && year != 2021 && year != 2022 && year != 2023 && year != 2024)
-						{
-							std::cout << "wrong year input";
-							std::cout << "year(2020,2021,2022,2023,2024):  ";
-							std::cin >> yearInput;
-							year = stoi(yearInput);
-						}
-
-						std::cout << "count(>= 0):  ";
-						std::cin >> countInput;
-						count = stoi(countInput);
-						while (count < 0)
-						{
-							std::cout << "wrong count input";
-							std::cout << "count(>= 0):  ";
-							std::cin >> countInput;
-							count = stoi(countInput);
-						}
-
-						iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
-						system("CLS");
-						std::cout << "Filtered: " << std::endl;
-						if (predicateInput == "0") {
-							auto hasMinResidents = [&](TerritorialUnit& comm) -> bool {
-								return comm.getPopulation(year) >= count;
-								};
-
-
-							dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, hasMinResidents);
-
-						}
-						if (predicateInput == "1") {
-							auto hasMaxResidents = [&](TerritorialUnit& comm) -> bool {
-								return comm.getPopulation(year) <= count;
-								};
-							dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, hasMaxResidents);
-						}
-						yearEntered = true;
-
-
-					}
-					if (predicateInput == "2") {
-						system("CLS");
-						iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
-						std::string strInput;
-						std::cout << "str:  ";
-						std::cin.ignore();
-						std::getline(std::cin, strInput);
-						system("CLS");
-						std::cout << "Filtered: " << std::endl;
-						auto containsStr = [&](TerritorialUnit& comm) -> bool {
-							const char* name = comm.getName();
-							size_t nameLen = strlen(name);
-							size_t retazecLen = strlen(strInput.c_str());
-							bool found = true;
-							if (retazecLen > nameLen)
-							{
-								return false;
-							}
-							for (size_t i = 0; i < nameLen; i++)
-							{
-								found = true;
-								for (size_t j = 0; j < retazecLen; j++)
-								{
-									if (name[i + j] != strInput[j])
-									{
-										found = false;
-									}
-								}
-								if (found) {
-									break;
-								}
-							}
-
-							return found;
-							};
-
-						dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, containsStr);
-
-					}
-					if (predicateInput == "3") {
-						system("CLS");
-						std::string typeInput;
-						int level;
-						std::cout << "0 ---- koren(krajina)" << std::endl;
-						std::cout << "1 ---- geogreficke delenie" << std::endl;
-						std::cout << "2 ---- spolkova republika" << std::endl;
-						std::cout << "3 ---- region" << std::endl;
-						std::cout << "4 ---- obec" << std::endl;
-						std::cin >> typeInput;
-						level = stoi(typeInput);
-						while (level < 0 && level < 5)
-						{
-							std::cin >> typeInput;
-							level = stoi(typeInput);
-						}
-						iterator currentIteratorPreCopy = iterator(&bingo, currentPosition);
-						system("CLS");
-						auto hasType = [&](TerritorialUnit& comm) -> bool {
-
-							return comm.getLevel() == level;
-							};
-
-
-
-						dataFilter = algoritmus.filter(currentIteratorPreCopy, currentIteratorEnd, hasType);
-						std::cout << std::endl;
-					}
-					std::cout << std::endl;
-					if (yearEntered) {
-						for (auto& comm : dataFilter)
-						{
-							comm.print(year);
-						}
-					}
-					else {
-						for (auto& comm : dataFilter)
-						{
-							comm.print();
-						}
-					}
-					std::cout << "Sort?" << std::endl;
-					std::cout << "0 ---- yes" << std::endl;
-					std::cout << "1 ---- no" << std::endl;
-					std::string sortInput;
-					std::cin >> sortInput;
-					if (sortInput == "0")
-					{
-						system("CLS");
-						std::string compareInput;
-						std::cout << "0 ---- compareAlphabetical" << std::endl;
-						std::cout << "1 ---- comparePopulation" << std::endl;
-						std::cin >> compareInput;
-						if (compareInput == "0") {
-							auto compareAlphabetical = [](const TerritorialUnit& a, const TerritorialUnit& b) -> bool {
-								std::locale locale("German_Germany.1250");
-								return locale(std::string(a.getName()), std::string(b.getName()));
-
-								};
-							std::cout << "Sorted: " << std::endl;
-							sorter.sort<TerritorialUnit>(dataFilter, compareAlphabetical);
-						}
-						else if (compareInput == "1") {
-							unsigned int compareYear;
-							std::cout << "Sorted: " << std::endl;
-							std::cout << "year: " << std::endl;
-							std::cin >> compareYear;
-							while (compareYear != 2020 && compareYear != 2021 && compareYear != 2022 && compareYear != 2023 && compareYear != 2024)
-							{
-								std::cout << "wrong year input";
-								std::cout << "year(2020,2021,2022,2023,2024):  ";
-								std::cin >> compareYear;
-							}
-							unsigned int compareGender;
-							std::cout << "0--- male" << std::endl;
-							std::cout << "1--- female" << std::endl;
-							std::cout << "2 --- total" << std::endl;
-							std::cin >> compareGender;
-							auto comparePopulation = [&](const TerritorialUnit& a, const TerritorialUnit& b) {
-								return a.getPopulation(compareYear, compareGender) < b.getPopulation(compareYear, compareGender);
-								};
-							sorter.sort<TerritorialUnit>(dataFilter, comparePopulation);
-						}
-						for (auto& comm : dataFilter)
-						{
-							comm.print();
-						}
-					}
+	using CommuneData = TableData<TerritorialUnit*>;
+	using Table = ds::adt::Treap<std::string, CommuneData>;
+	HeapSort sorter;
+	SetConsoleOutputCP(1250);
+	SetConsoleCP(1250);
+	Algoritmus algoritmus;
+	FileReader* reader = new FileReader;
+	std::vector<TerritorialUnit> dataFilter;
+	std::vector<TerritorialUnit*> data = reader->readFile();
+	FirstLevel levelOne(data);
+	ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& bingo = reader->loadHierarchy(data);
+	HierarchyIterator* hierarIterator = new HierarchyIterator(&bingo);
+	std::cout << bingo.size() << std::endl;
+	Table& geoDivisionTable = reader->getGeoDivisionTable();
+	Table& communeTable = reader->getCommuneTable();
+	Table& federalTable = reader->getFederalTable();
+	Table& regionTable = reader->getRegionTable();
+	LevelThree* three = new LevelThree(geoDivisionTable, federalTable, regionTable, communeTable);
+	std::string input;
+	while (true) {
+		system("CLS");
+		std::cout << "0 ---- uroven 1" << std::endl;
+		std::cout << "1 ---- uroven 2" << std::endl;
+		std::cout << "2 ---- uroven 3" << std::endl;
+		std::cout << "q ---- quit" << std::endl;
+		std::cin >> input;
+		if (input == "0")
+		{
+			int number = levelOne.run();
+			while (true)
+			{
+				if (number == -1)
+				{
+					break;
 				}
-			}
-			else if (input == "1") {
-				while (true) {
-
-					int number = three->run();
-					if (number == -1)
-					{
-						break;
-					}
-				}
-			}
-			else if (input == "q") {
-				break;
 			}
 		}
-		std::cout << dataFilter.size() << std::endl;
-		delete reader;
-		delete hierarIterator;
-		delete three;
+		else if (input == "1") {
+			while (true) {
+				bool yearEntered = false;
+				unsigned int year;
+				int number = hierarIterator->run();
+				if (number == -1)
+				{
+					break;
+				}
+			}
+		}
+		else if (input == "2") {
+			while (true) {
 
-
-
+				int number = three->run();
+				if (number == -1)
+				{
+					break;
+				}
+			}
+		}
+		else if (input == "q") {
+			break;
+		}
 	}
+	delete reader;
+	delete hierarIterator;
+	delete three;
 
 
 }

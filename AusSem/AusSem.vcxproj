@@ -135,19 +135,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="commune.cpp" />
-    <ClCompile Include="fileReader.cpp" />
+    <ClCompile Include="TerritorialUnit.cpp" />
+    <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="algoritmus.h" />
+    <ClInclude Include="Algoritmus.h" />
+    <ClInclude Include="FirstLevel.h" />
     <ClInclude Include="TerritorialUnit.h" />
     <ClInclude Include="TableData.h" />
-    <ClInclude Include="fileReader.h" />
-    <ClInclude Include="heapSort.h" />
-    <ClInclude Include="hierarchyIterator.h" />
-    <ClInclude Include="levelThree.h" />
-    <ClInclude Include="year.h" />
+    <ClInclude Include="FileReader.h" />
+    <ClInclude Include="HeapSort.h" />
+    <ClInclude Include="HierarchyIterator.h" />
+    <ClInclude Include="LevelThree.h" />
+    <ClInclude Include="Year.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

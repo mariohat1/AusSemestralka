@@ -2,7 +2,7 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
-class heapSort {
+class HeapSort {
 public:
 	template<typename T>
 	void sort(std::vector<T>& data, std::function<bool(const T&, const T&)> compare);
@@ -12,9 +12,9 @@ public:
 };
 
 template<typename T>
-inline void heapSort::sort(std::vector<T>& data, std::function<bool(const T&, const T&)> compare)
+inline void HeapSort::sort(std::vector<T>& data, std::function<bool(const T&, const T&)> compare)
 {
-	for (size_t i = 1; i < data.size() - 1; i++)
+	for (size_t i = 1; i < data.size(); i++)
 	{
 		bool swap = false;
 		size_t current = i;

@@ -18,37 +18,43 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fileReader.cpp">
+    <ClCompile Include="FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="commune.cpp">
+    <ClCompile Include="TerritorialUnit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fileReader.h">
+    <ClInclude Include="FileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TerritorialUnit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="algoritmus.h">
+    <ClInclude Include="Algoritmus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="year.h">
+    <ClInclude Include="Year.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TableData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hierarchyIterator.h">
+    <ClInclude Include="HierarchyIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="levelThree.h">
+    <ClInclude Include="LevelThree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="heapSort.h">
+    <ClInclude Include="HeapSort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FirstLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

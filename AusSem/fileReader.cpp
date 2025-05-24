@@ -1,6 +1,6 @@
-#include "fileReader.h"
+#include "FileReader.h"
 
-void fileReader::skipLines(int count)
+void FileReader::skipLines(int count)
 {
 	std::string line;
 	for (size_t i = 0; i < count; i++)
@@ -9,7 +9,7 @@ void fileReader::skipLines(int count)
 	}
 }
 
-TerritorialUnit* fileReader::containsCode(unsigned int code, std::vector<TerritorialUnit*> data)
+TerritorialUnit* FileReader::containsCode(unsigned int code, std::vector<TerritorialUnit*> data)
 {
 	for (auto& comm : data)
 	{
@@ -21,7 +21,7 @@ TerritorialUnit* fileReader::containsCode(unsigned int code, std::vector<Territo
 	return nullptr;
 }
 
-void fileReader::cumulateHierarchy()
+void FileReader::cumulateHierarchy()
 {
 	hierarchy.processPostOrder(hierarchy.accessRoot(), [&](CommuneBlock* node) {
 		TerritorialUnit* comm = node->data_;
@@ -34,7 +34,7 @@ void fileReader::cumulateHierarchy()
 			{
 				for (size_t i = 0; i < comm->getYears().size(); i++)
 				{
-					year years = {};
+					Year years = {};
 					parentData->addYear(years);
 
 				}
@@ -55,7 +55,7 @@ void fileReader::cumulateHierarchy()
 		});
 }
 
-ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& fileReader::loadHierarchy(std::vector<TerritorialUnit*>& data)
+ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& FileReader::loadHierarchy(std::vector<TerritorialUnit*>& data)
 {
 	hierarchy.emplaceRoot().data_ = new TerritorialUnit("rakusko", 1);
 	inputReader.open("uzemie.csv");
@@ -63,14 +63,7 @@ ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& fileReader::loadHierarchy(
 	int currentCodeProcessed = 11;
 	int count = 0;
 	CommuneBlock* currentParent = hierarchy.accessRoot();
-	if (currentParent == nullptr) {
-		std::cout << "asd";
-	}
-
 	while (std::getline(inputReader, line)) {
-
-
-
 		std::string name;
 		int code = 0;
 		if (line.empty()) {
@@ -87,59 +80,41 @@ ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& fileReader::loadHierarchy(
 		if (level == 1)
 		{
 			const char* nameToAdd = name.c_str();
-			for (auto& data :this->geoDivisionTable)
-			{
-				std::cout << data.key_ << std::endl;
-			}
-
 			TerritorialUnit* comm = new TerritorialUnit(name.c_str(), code);
-			if (this->geoDivisionTable.contains(nameToAdd))
-			{
-				std::cout << "K¾úè už existuje: " << name << std::endl;
-			}
-
-			std::cout << "INSERT " << name << " | code: " << code << std::endl;
-
-			CommuneData data;
+			UnitData data;
 			data.single = comm;
-			this->geoDivisionTable.insert(name, data,true);
+			this->geoDivisionTable.insert(name, data, true);
 			hierarchy.emplaceSon(*currentParent, static_cast<size_t>(code) - 1).data_ = comm;
 			comm->setLevel(level);
 		}
-
-
 		if (level == 2)
 		{
 			TerritorialUnit* comm = new TerritorialUnit(name.c_str(), code);
 			size_t parentIndex = (code / 10) - 1;
 			size_t sonIndex = (code % 10) - 1;
-			CommuneBlock* newParent = hierarchy.accessSon(*currentParent, parentIndex);			
+			CommuneBlock* newParent = hierarchy.accessSon(*currentParent, parentIndex);
 			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
 			comm->setLevel(level);
-			CommuneData data;
+			UnitData data;
 			data.single = comm;
-			this->federalRepublicTable.insert(name, data,true);
-
+			this->federalRepublicTable.insert(name, data, true);
 		}
-
-
 		if (level == 3) {
 			TerritorialUnit* comm = new TerritorialUnit(name.c_str(), code);
 			size_t grandParentIndex = (code / 100) - 1;
 			size_t parentIndex = ((code % 100) / 10) - 1;
-			size_t sonIndex = (code % 10) - 1 > 0 ? (code % 10) - 1 : 0;
+			int sonIndex = (code % 10) - 1 > 0 ? (code % 10) - 1 : 0;
 			CommuneBlock* grandParent = hierarchy.accessSon(*currentParent, grandParentIndex);
 			CommuneBlock* newParent = hierarchy.accessSon(*grandParent, parentIndex);
 			hierarchy.emplaceSon(*newParent, sonIndex).data_ = comm;
 			comm->setLevel(level);
-			CommuneData data;
+			UnitData data;
 			data.single = comm;
-			this->regionTable.insert(name, data,true);
+			this->regionTable.insert(name, data, true);
 		}
 	}
 	line = "";
 	inputReader.close();
-	
 	inputReader.open("obce.csv");
 	int i = 0;
 	while (std::getline(inputReader, line)) {
@@ -156,26 +131,23 @@ ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& fileReader::loadHierarchy(
 		}
 		ss >> hierarchyCode;
 		int hierarchyOrder = stoi(hierarchyCode.substr(3));
-
-
 		size_t grandParentIndex = (hierarchyOrder / 100) - 1;
 		size_t parentIndex = ((hierarchyOrder % 100) / 10) - 1;
-		size_t sonIndex = (hierarchyOrder % 10) - 1 > 0 ? (hierarchyOrder % 10) - 1 : 0;
+		int sonIndex = (hierarchyOrder % 10) - 1 > 0 ? (hierarchyOrder % 10) - 1 : 0;
 		CommuneBlock* grandParent = hierarchy.accessSon(*currentParent, grandParentIndex);
 		CommuneBlock* Parent = hierarchy.accessSon(*grandParent, parentIndex);
 		CommuneBlock* newParent = hierarchy.accessSon(*Parent, sonIndex);
-
+		count = hierarchy.degree(*newParent);
 		CommuneBlock* son = &hierarchy.emplaceSon(*newParent, count);
 		size_t level = 4;
 		TerritorialUnit* comm = data[i];
 		son->data_ = comm;
 		son->data_->setLevel(level);
-		count = hierarchy.degree(*newParent) - 1 == count ? count = 0 : count++;
-		CommuneData data;
+		UnitData data;
 		data.single = comm;
-		this->communeTable.insert(name, data,true);
+		this->communeTable.insert(name, data, true);
 		i++;
-	}	
+	}
 	inputReader.close();
 	this->cumulateHierarchy();
 	return this->hierarchy;
@@ -183,37 +155,25 @@ ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& fileReader::loadHierarchy(
 
 
 
-
-
-
-
-std::vector<TerritorialUnit*> fileReader::readFile()
+std::vector<TerritorialUnit*> FileReader::readFile()
 {
 	std::vector<TerritorialUnit*> data;
 	int firstFile = false;
-	
+
 	for (unsigned int currentYear = 2020; currentYear <= 2024; ++currentYear) {
 		inputReader.open(std::to_string(currentYear) + ".csv");
-		
-
-
 		if (!inputReader.is_open()) {
 			throw new std::runtime_error("Failed to open file");
 		}
-
 		skipLines(9);
-
 		std::string line, temp, section;
 		std::getline(inputReader, line, ';');
 		int fileYear;
 		std::stringstream ss(line);
 		ss >> temp >> section;
 		ss.clear();
-
 		std::getline(inputReader, line, ';');
 		ss.str(line);
-
-
 		ss >> fileYear;
 		if (fileYear != currentYear)
 		{
@@ -225,9 +185,7 @@ std::vector<TerritorialUnit*> fileReader::readFile()
 		unsigned int k = 0;
 		while (std::getline(inputReader, line))
 		{
-		
 			std::stringstream ss(line);
-
 			std::getline(ss, name, ';');
 			std::getline(ss, line, '<');
 			if (std::getline(ss, line, '>')) {
@@ -238,67 +196,44 @@ std::vector<TerritorialUnit*> fileReader::readFile()
 				std::stringstream(line) >> male;
 			}
 			std::getline(ss, line, ';');
-
-
 			if (std::getline(ss, line, ';')) {
 				std::stringstream(line) >> female;
 			}
-
 			if (name == "Nicht klassifizierbar")
 			{
 				break;
 			}
-			year yearToAdd;
+			Year yearToAdd;
 			yearToAdd.female = female;
 			yearToAdd.male = male;
 			yearToAdd.year = currentYear;
-
-
-			 
 			if (!firstFile) {
 				TerritorialUnit* newComm = new TerritorialUnit(name.c_str(), code);
 				newComm->addYear(yearToAdd);
 				data.push_back(newComm);
-				
 			}
 			else {
-
 				data[k]->addYear(yearToAdd);
 			}
 			k++;
-
-
-
 		}
 		firstFile = true;
-
 		inputReader.close();
 	}
-
 	return data;
 }
 
-fileReader::~fileReader()
+FileReader::~FileReader()
 {
 	hierarchy.processPostOrder(hierarchy.accessRoot(), [](CommuneBlock* node) {
 		delete node->data_;
 		node->data_ = nullptr;
 		});
-
-	std::cout << geoDivisionTable.size() << std::endl;
-	std::cout << federalRepublicTable.size() << std::endl;
-	std::cout << regionTable.size() << std::endl;
-	std::cout << communeTable.size() << std::endl;
-	 geoDivisionTable.clear();
-	 federalRepublicTable.clear();
-	 regionTable.clear();
-	 
-	 communeTable.clear();
-	 std::cout << communeTable.size() << std::endl;
-
+	geoDivisionTable.clear();
+	federalRepublicTable.clear();
+	regionTable.clear();
+	communeTable.clear();
 	hierarchy.clear();
-
-
 	if (inputReader.is_open())
 	{
 		inputReader.close();

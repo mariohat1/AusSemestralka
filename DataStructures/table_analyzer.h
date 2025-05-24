@@ -82,10 +82,10 @@ namespace ds::utils
 		const size_t toInsert = structure.size();
 		for (size_t i = toInsert; i < size; ++i)
 		{
-			/*if (keyToInsert == i)
-			{
-				continue;
-			}*/
+			//if (keyToInsert == i)
+			//{
+			//	continue;
+			//}
 
 			structure.insert(i, i);
 		}

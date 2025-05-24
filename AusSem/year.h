@@ -1,5 +1,5 @@
 #pragma once
-struct year
+struct Year
 {
 	unsigned int female;
 	unsigned int male;

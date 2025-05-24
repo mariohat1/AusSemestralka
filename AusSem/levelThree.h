@@ -1,20 +1,53 @@
 #pragma once
 #include "TableData.h"
-class levelThree
+class LevelThree
 {
 private:
-    using CommuneData = TableData<TerritorialUnit*>;
-    using Table = ds::adt::Treap<std::string, CommuneData>;
+    using UnitData = TableData<TerritorialUnit*>;
+    using Table = ds::adt::Treap<std::string, UnitData>;
     Table& geoDivisionTable;
     Table& federalRepublicTable;
     Table& regionTable;
     Table& communeTable;
+
+    void printInfo(Table& table) {
+        std::string key;
+        std::cout << "nazov?" << std::endl;
+        std::cin.ignore();
+        std::getline(std::cin, key);
+        TableData<TerritorialUnit*>* data = nullptr;
+        bool found = table.tryFind(key, data);
+        if (found)
+        {
+            std::cout << "Found: ";
+            if (data->duplicit != nullptr)
+            {
+                for (auto it = data->duplicit->begin(); it != data->duplicit->end(); ++it)
+                {
+                    TerritorialUnit& comm = **it;
+                  
+                    comm.printAll();
+                }
+            }
+            else {
+                data->single->printAll();
+            }
+        }
+        else {
+            std::cout << "Name not found" << std::endl;
+        }
+
+
+
+    };
+
+
          
 public:
-	levelThree(ds::adt::Treap<std::string, CommuneData>& geoDivision,
-        ds::adt::Treap<std::string, CommuneData>& federalRepublic,
-        ds::adt::Treap<std::string, CommuneData>& region,
-        ds::adt::Treap<std::string, CommuneData>& commune)
+	LevelThree(ds::adt::Treap<std::string, UnitData>& geoDivision,
+        ds::adt::Treap<std::string, UnitData>& federalRepublic,
+        ds::adt::Treap<std::string, UnitData>& region,
+        ds::adt::Treap<std::string, UnitData>& commune)
         : geoDivisionTable(geoDivision), federalRepublicTable(federalRepublic),
         regionTable(region), communeTable(commune) {
     }
@@ -51,41 +84,7 @@ public:
     } 
 
 
-    void printInfo(Table& table) {
-        std::string key;
-        std::cout << "nazov?" << std::endl;
-        int a;
-       
-        std::cin.ignore();
-
-        std::getline(std::cin, key);
-
-        TableData<TerritorialUnit*>* data = nullptr;
-        bool found = table.tryFind(key,data);
-        if (found)
-        {
-            if (data->duplicit != nullptr)
-            {
-                for (auto it = data->duplicit->begin(); it != data->duplicit->end(); ++it)
-                {
-                    TerritorialUnit& comm = **it;
-                    std::cout << "Najdene ";
-                    comm.print();
-                }
-            }
-            else {
-                data->single->print();
-            
-            }
-
-        }
-        else {
-            std::cout << "nazov sa nenasiel" << std::endl;
-        }
-    
-    
-    
-    };
+   
 
 
 	
