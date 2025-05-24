@@ -16,20 +16,16 @@
 int main()
 {
 	initHeapMonitor();
-
 	using CommuneData = TableData<TerritorialUnit*>;
 	using Table = ds::adt::Treap<std::string, CommuneData>;
-	HeapSort sorter;
 	SetConsoleOutputCP(1250);
 	SetConsoleCP(1250);
-	Algoritmus algoritmus;
 	FileReader* reader = new FileReader;
 	std::vector<TerritorialUnit> dataFilter;
 	std::vector<TerritorialUnit*> data = reader->readFile();
 	FirstLevel levelOne(data);
-	ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& bingo = reader->loadHierarchy(data);
-	HierarchyIterator* hierarIterator = new HierarchyIterator(&bingo);
-	std::cout << bingo.size() << std::endl;
+	ds::amt::MultiWayExplicitHierarchy<TerritorialUnit*>& hierar = reader->loadHierarchy(data);
+	HierarchyIterator* hierarIterator = new HierarchyIterator(&hierar);
 	Table& geoDivisionTable = reader->getGeoDivisionTable();
 	Table& communeTable = reader->getCommuneTable();
 	Table& federalTable = reader->getFederalTable();
@@ -82,8 +78,7 @@ int main()
 	delete reader;
 	delete hierarIterator;
 	delete three;
-
-
+	
 }
 
 

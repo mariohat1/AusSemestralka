@@ -1095,8 +1095,8 @@ namespace ds::adt {
     {
         node->data_.priority_ = this->rng_.min();
         while (this->getHierarchy()->degree(*node) == 2) {
-            BSTNodeType* leftSon = this->getHierarchy()->accessLeftSon(*node);
-            BSTNodeType* rightSon = this->getHierarchy()->accessRightSon(*node);
+            BSTNodeType* leftSon = node->left_;
+            BSTNodeType* rightSon = node->right_;
 
             if (leftSon->data_.priority_ < rightSon->data_.priority_) {
                 this->rotateRight(leftSon);
@@ -1116,7 +1116,7 @@ namespace ds::adt {
         BSTNodeType* parent = this->getHierarchy()->accessParent(*node);
 
         while (parent != nullptr && parent->data_.priority_ > node->data_.priority_) {
-            if (this->getHierarchy()->accessLeftSon(*parent) == node) {
+            if (parent->left_ == node) {
                 this->rotateRight(node);
             }
             else {
