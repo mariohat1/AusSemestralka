@@ -255,7 +255,7 @@ private:
 			std::cin >> sonOrderInput;
 			sonOrder = stoi(sonOrderInput);
 
-			if (sonOrder <= this->count)
+			if (sonOrder < this->count)
 			{
 				currentPosition = hierarchy->accessSon(*currentPosition, sonOrder);
 			}
